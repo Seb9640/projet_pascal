@@ -1,0 +1,20 @@
+@use 'theme';
+
+.banner{
+  background: linear-gradient(to right, theme.$common-purple, theme.$common-red);
+  color: white;
+}
+h3.card-title, h4 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.review-content{
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+.card{
+  height: 100%;
+}

@@ -1,0 +1,4 @@
+<div class="rating">
+    <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star"
+        [ngClass]="{ 'filled': star <= note }">&#9733;</span>
+</div>

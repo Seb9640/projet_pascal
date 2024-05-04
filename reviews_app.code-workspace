@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "back-skeleton"
+		},
+		{
+			"path": "front-skeleton"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}
