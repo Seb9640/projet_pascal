@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.pascal.backskeleton.DAO.MovieRepository;
@@ -73,6 +73,33 @@ public class ReviewController {
         Optional<Review> optionalReview = reviewRepository.findById(id);
         return optionalReview.map(review -> new ResponseEntity<>(review, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/by/entity/{entityType}/{entityId}")
+    public ResponseEntity<Map<String, Object>> getReviewsByEntityTypeAndEntityId(@PathVariable String entityType,
+            @PathVariable Long entityId) {
+        List<Review> reviews = reviewRepository.findByEntityTypeAndEntityId(entityType, entityId);
+        Map<String, Object> response = new HashMap<>();
+        
+        response.put("entityType", entityType);
+        response.put("entityId", entityId);
+
+        if (!reviews.isEmpty()) {
+            int dataCount = reviews.size();
+            double averageRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0);
+            response.put("isSuccess", true);
+            response.put("dataCount", dataCount);
+            response.put("datas", reviews);
+            response.put("avg", averageRating);
+        } else {
+            response.put("isSuccess", false);
+            response.put("dataCount", 0);
+            response.put("datas", Collections.emptyList());
+            response.put("avg", 0);
+        }
+        response.put("requestDateTime", LocalDateTime.now());
+        return ResponseEntity.ok(response);
+
     }
 
     @PostMapping

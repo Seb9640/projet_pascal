@@ -4,6 +4,7 @@ import { localDb } from 'db/local';
 import { Movie } from 'models/movie.model';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';
+import { ReviewService } from 'services/review.service';
 
 @Component({
   selector: 'entity-item',
@@ -16,10 +17,12 @@ export class EntityItemComponent {
   entityName?: string;
   entityId?: string;
   isLoading: boolean = true
+  reviewData: any
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
+    private reviewService: ReviewService,
     private placeService: PlaceService,
   ) { }
 
@@ -35,11 +38,14 @@ export class EntityItemComponent {
       this.entityName = params['model'] || 'movies';
       this.entityId = params['id'];
       let service: any
+      let entityType: string = ""
 
       if(this.entityName === 'movies'){
         service = this.movieService
+        entityType = 'movie'
       }else if(this.entityName === 'places'){
         service = this.placeService
+        entityType = 'place'
       }
       service.getEntityById(this.entityId).subscribe(
         (entity: Movie) => {
@@ -51,6 +57,13 @@ export class EntityItemComponent {
           console.error(error);
         }
       )
+      if(this.entityId && entityType){
+        this.reviewService.getReviewByEntity(entityType, this.entityId).subscribe(
+          (reviewData)=>{
+            this.reviewData = reviewData
+          }
+        )
+      }
     })
 
     // this.entity = await localDb.getData('entitys', id)

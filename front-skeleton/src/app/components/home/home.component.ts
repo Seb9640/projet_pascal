@@ -1,9 +1,4 @@
 import { Component, OnInit } from "@angular/core"
-import { Movie } from "models/movie.model"
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import movies from "datas/movies";
-import { localDb } from "db/local";
-import { Review } from "models/review.model";
 import { ReviewService } from "services/review.service";
 
 

@@ -28,7 +28,7 @@ export class AddEditFormComponent implements OnInit {
   ngOnInit(): void {
     this.showModal();
     console.log([this.model, this.entity, this.entityName]);
-    const notAllowed = ["id", 'created_at', "updated_at", 'entity_id', 'entity_type' ];
+    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType' ];
     this.inputs = Object.keys(this.model).filter(key => !notAllowed.includes(key));
 
     const defaultValue: any = {};
@@ -41,7 +41,7 @@ export class AddEditFormComponent implements OnInit {
     });
     this.form = this.fb.group(defaultValue);
     console.log({entityName:this.entityName, entity:this.entity, model: this.model});
-    
+
   }
 
   onFileSelected(event: any) {
@@ -55,7 +55,7 @@ export class AddEditFormComponent implements OnInit {
 
     if (["synopsis", "content", 'opening_hours', 'review' ].includes(lowerCaseName)) {
       return 'text';
-    } else if (['image', 'poster_url', 'image_url'].includes(lowerCaseName)) {
+    } else if (['image', 'posterurl', 'imageurl'].includes(lowerCaseName)) {
       return 'file';
     } else if (lowerCaseName.includes('date')) {
       return 'date';
@@ -100,12 +100,12 @@ export class AddEditFormComponent implements OnInit {
 
       console.log({ data });
       if(this.entityName === "review"){
-        data.entity_id = this.model.entity_id 
+        data.entity_id = this.model.entity_id
         data.entity_type = this.model.entity_type
       }
 
       console.log(data);
-      
+
 
       if (this.entity) {
         // update
@@ -120,7 +120,7 @@ export class AddEditFormComponent implements OnInit {
         data.updated_at = new Date()
         localDb.updateData(this.entityName!, data);
       } else {
-        // add 
+        // add
         data.created_at = new Date()
         localDb.addData(this.entityName!, data);
       }

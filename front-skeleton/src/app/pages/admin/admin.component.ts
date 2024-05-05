@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import movies from 'datas/movies';
-import { places } from 'datas/places';
-import { users } from 'datas/users';
 import { localDb } from 'db/local';
-import { Movie } from 'models/movie.model';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';
 import { ReviewService } from 'services/review.service';

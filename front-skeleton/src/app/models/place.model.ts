@@ -4,7 +4,8 @@ export interface Place {
     title: string;
     type_id: number;
     address: string | null;
-    image_Url: string | null;
+    imageUrl: string | null;
+    rating?: number | null;
     opening_hours: string | null;
     updatedAt?: string| Date | null;
     createdAt?: string| Date;

@@ -21,6 +21,7 @@ export class ViewModalComponent implements OnInit {
     this.showModal()
     if(this.entity){
       this.modelEntities = Object.keys(this.entity)
+      this.modelEntities = this.modelEntities.filter((k: string) => k !== 'id')
     }
   }
 

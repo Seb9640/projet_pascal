@@ -24,20 +24,11 @@ export class EntityListComponent implements OnInit {
   reviewsPerPage: number = 8;
   filteredEntities: Movie[] = []; // Liste filtrée d'avis
   searchTerm: string = ''; // Terme de recherche
-  AddEditReview: boolean = false
-  isDisplayReview: boolean = false
   isLoading: boolean = true
   currentData: any
   title?: string
   currentReviews?: any[]
-  reviewModel: Review = {
-    full_name: '',
-    email: '',
-    summary: '',
-    review: '',
-    image: '',
-    rating: 2,
-  }
+
 
   constructor(
     private router: Router,
@@ -123,7 +114,6 @@ export class EntityListComponent implements OnInit {
 
   async displayReview(entitie: Movie){
     this.currentData = entitie
-    this.isDisplayReview = true
     this.title = "Avis pour le entity : "+entitie.title
     this.currentReviews = (await localDb.search('review', 'entity_id', entitie.id)).map((r: any) =>{
       r.entity = entitie
@@ -131,17 +121,5 @@ export class EntityListComponent implements OnInit {
     })
   }
 
-  addReview(entitie: Movie) {
-    this.AddEditReview = true
-    this.currentData = entitie
-    this.reviewModel.entity_id = entitie.id
-    this.title = "Noter le entity : "+entitie.title
-  }
-  closeModal(){
-    this.AddEditReview = false
-    this.currentData = undefined
-    this.isDisplayReview = false
-    this.currentReviews = []
-    this.title = ""
-  }
+
 }

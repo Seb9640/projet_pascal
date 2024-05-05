@@ -5,7 +5,9 @@ export interface Movie {
   director: string | null;
   release_date: string | null;
   synopsis: string | null;
-  poster_url: string | null;
+  posterUrl: string | null;
+  imageUrl?: string | null;
+  rating?: number | null;
   updatedAt?: string| Date | null;
   createdAt?: string| Date;
 }

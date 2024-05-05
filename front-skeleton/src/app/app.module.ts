@@ -22,7 +22,6 @@ import { DisplayValuePipe } from "pipes/display-value.pipe"
 import { ConfirmModalComponent } from "components/confirm-modal/confirm-modal.component"
 import { GetLinkPipe } from "pipes/get-link.pipe"
 import { EntityListComponent } from "components/entity-list/entity-list.component"
-import { PlaceListComponent } from "components/place-list/place-list.component"
 import { AddEditReviewComponent } from "components/add-edit-review/add-edit-review.component"
 import { ReviewBoxComponent } from "components/review-box/review-box.component"
 import { ReviewListComponent } from "components/review-list/review-list.component"
@@ -30,6 +29,8 @@ import { ViewModalComponent } from "components/view-modal/view-modal.component"
 import { EntityItemComponent } from "components/entity-item/entity-item.component"
 import { ViewReviewModalComponent } from "components/view-review-modal/view-review-modal.component"
 import { LoaderComponent } from "components/loader/loader.component"
+import { DisplayEntityComponent } from "components/display-entity/display-entity.component"
+import { ReviewItemComponent } from "components/review-item/review-item.component"
 
 
 @NgModule({
@@ -45,14 +46,15 @@ import { LoaderComponent } from "components/loader/loader.component"
     AddEditFormComponent,
     ConfirmModalComponent,
     EntityListComponent,
-    PlaceListComponent,
     AddEditReviewComponent,
     ReviewBoxComponent,
     ReviewListComponent,
     ViewModalComponent,
     EntityItemComponent,
     ViewReviewModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    DisplayEntityComponent,
+    ReviewItemComponent
   ],
   imports: [
     BrowserModule,

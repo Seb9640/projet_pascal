@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlaceListComponent } from './place-list.component';
+import { DisplayEntityComponent } from './display-entity.component';
 
-describe('PlaceListComponent', () => {
-  let component: PlaceListComponent;
-  let fixture: ComponentFixture<PlaceListComponent>;
+describe('DisplayEntityComponent', () => {
+  let component: DisplayEntityComponent;
+  let fixture: ComponentFixture<DisplayEntityComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlaceListComponent]
+      imports: [DisplayEntityComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(PlaceListComponent);
+
+    fixture = TestBed.createComponent(DisplayEntityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

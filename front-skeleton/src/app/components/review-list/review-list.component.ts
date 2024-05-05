@@ -7,7 +7,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 })
 export class ReviewListComponent implements OnInit{
 
-  @Input() currentReviews?: any[] = [];
+  @Input() currentReviews?: any;
   @Output() closeModal = new EventEmitter<any>();
   @ViewChild('reviewModal') reviewModal?: ElementRef;
   modal?: any

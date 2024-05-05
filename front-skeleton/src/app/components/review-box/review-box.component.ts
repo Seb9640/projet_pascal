@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ReviewBoxComponent {
 @Input() note: number = 1
+@Input() count?: number
 }
