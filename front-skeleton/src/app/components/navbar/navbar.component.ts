@@ -37,15 +37,7 @@ export class NavbarComponent {
   }
 
   getData() {
-    this.movieService.getAllEntities().subscribe(
-      (value: any) => {
-        console.log(value);
-      },
-      (error: any) => {
-        console.error("Une erreur s'est produite lors de la récupération des données :", error);
-        // Vous pouvez ajouter d'autres logiques de gestion d'erreur ici, par exemple, afficher un message d'erreur à l'utilisateur.
-      }
-    );
+    
   }
 
 

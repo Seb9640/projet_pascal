@@ -12,5 +12,5 @@ export class MovieService extends EntityService<Movie> {
     super(http, 'movies');
   }
 
-  // Vous pouvez ajouter des méthodes spécifiques pour les films ici si nécessaire
+  
 }

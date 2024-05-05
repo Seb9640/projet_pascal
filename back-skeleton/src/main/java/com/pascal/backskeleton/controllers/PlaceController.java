@@ -1,64 +1,73 @@
 package com.pascal.backskeleton.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+import java.util.Optional;
 
 import com.pascal.backskeleton.DAO.PlaceRepository;
 import com.pascal.backskeleton.models.Place;
 
 @RestController
-@RequestMapping("/places")
+@RequestMapping("/api/places")
 public class PlaceController {
 
     @Autowired
     private PlaceRepository placeRepository;
 
-    // // Create
-    // @PostMapping
-    // public ResponseEntity<Place> addPlace(@RequestBody Place place) {
-    //     Place savedPlace = placeRepository.save(place);
-    //     return new ResponseEntity<>(savedPlace, HttpStatus.CREATED);
-    // }
+    // Endpoint pour récupérer toutes les places
+    @GetMapping
+    public ResponseEntity<List<Place>> getAllPlaces() {
+        List<Place> places = placeRepository.findAll();
+        return new ResponseEntity<>(places, HttpStatus.OK);
+    }
 
-    // // // Read
-    // // @GetMapping("/{id}")
-    // // public ResponseEntity<Place> getPlaceById(@PathVariable Long id) {
-    // //     Place place = placeRepository.findById(id)
-    // //             .orElseThrow(() -> new ResourceNotFoundException("Place not found with id " + id));
-    // //     return new ResponseEntity<>(place, HttpStatus.OK);
-    // // }
+    // Endpoint pour récupérer une place par son ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Place> getPlaceById(@PathVariable("id") Long id) {
+        Optional<Place> place = placeRepository.findById(id);
+        return place.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
-    // @GetMapping
-    // public ResponseEntity<List<Place>> getAllPlaces() {
-    //     List<Place> places = placeRepository.findAll();
-    //     return new ResponseEntity<>(places, HttpStatus.OK);
-    // }
+    // Endpoint pour créer une nouvelle place
+    @PostMapping
+    public ResponseEntity<Place> createPlace(@RequestBody Place place) {
+        Place savedPlace = placeRepository.save(place);
+        return new ResponseEntity<>(savedPlace, HttpStatus.CREATED);
+    }
 
-    // // Update
-    // @PutMapping("/{id}")
-    // public ResponseEntity<Place> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails) {
-    //     Place place = placeRepository.findById(id)
-    //             .orElseThrow(() -> new ResourceNotFoundException("Place not found with id " + id));
+    // Endpoint pour mettre à jour une place existante
+    @PutMapping("/{id}")
+    public ResponseEntity<Place> updatePlace(@PathVariable("id") Long id, @RequestBody Place place) {
+        Optional<Place> optionalPlace = placeRepository.findById(id);
+        if (optionalPlace.isPresent()) {
+            Place existingPlace = optionalPlace.get();
+            existingPlace.setTitle(place.getTitle());
+            existingPlace.setAddress(place.getAddress());
+            existingPlace.setImageUrl(place.getImageUrl());
+            existingPlace.setOpeningHours(place.getOpeningHours());
+            existingPlace.setCreatedAt(place.getCreatedAt());
 
-    //     place.setTitle(placeDetails.getTitle());
-    //     place.setAddress(placeDetails.getAddress());
-    //     place.setOpeningHours(placeDetails.getOpeningHours());
-    //     // You can add more fields to update as needed
+            Place updatedPlace = placeRepository.save(existingPlace);
+            return new ResponseEntity<>(updatedPlace, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-    //     Place updatedPlace = placeRepository.save(place);
-    //     return new ResponseEntity<>(updatedPlace, HttpStatus.OK);
-    // }
-
-    // // Delete
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> deletePlace(@PathVariable Long id) {
-    //     Place place = placeRepository.findById(id)
-    //             .orElseThrow(() -> new ResourceNotFoundException("Place not found with id " + id));
-
-    //     placeRepository.delete(place);
-    //     return ResponseEntity.ok().build();
-    // }
+    // Endpoint pour supprimer une place
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deletePlace(@PathVariable("id") Long id) {
+        try {
+            placeRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -6,8 +6,8 @@ import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
-export class EntityService<T extends { id: number }> {
- 
+export class EntityService<T extends { id?: number }> {
+
   protected apiUrl: string;
   protected entityName: string;
 
@@ -23,7 +23,7 @@ export class EntityService<T extends { id: number }> {
   getEntityById(id: number): Observable<T> {
     return this.http.get<T>(`${this.apiUrl}/${id}`);
   }
-// 
+//
   addEntity(entity: T): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}`, entity);
   }

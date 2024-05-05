@@ -4,6 +4,11 @@ import movies from 'datas/movies';
 import { places } from 'datas/places';
 import { users } from 'datas/users';
 import { localDb } from 'db/local';
+import { Movie } from 'models/movie.model';
+import { MovieService } from 'services/movie.service';
+import { PlaceService } from 'services/place.service';
+import { ReviewService } from 'services/review.service';
+import { UserService } from 'services/user.service';
 
 @Component({
   selector: 'admin',
@@ -25,43 +30,71 @@ export class AdminComponent {
   currentData?: any
   // showColumnSelection: boolean = false;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+    private movieService: MovieService,
+    private placeService: PlaceService,
+    private reviewService: ReviewService,
+    private userService: UserService,
+  ) { }
 
   async ngOnInit(): Promise<void> {
     // Obtenir les paramètres de l'URL
+
     this.route.params.subscribe(async params => {
       this.entityName = params['entityName'] || 'movies';
       this.entityId = params['entityId'];
 
       // Charger les données de l'entité à partir de la base de données locale
+
+
       await this.getData()
 
-      if (this.entityData?.length) {
-        // Charger les colonnes sélectionnées à partir du localStorage ou afficher les 2 premières colonnes par défaut
-        const storedColumnsString = localStorage.getItem(this.entityName!);
-        const storedColumns = storedColumnsString ? JSON.parse(storedColumnsString) : Object.keys(this.entityData[0]).slice(0, 2);
-        this.selectedColumns[this.entityName!] = storedColumns;
-        console.log({ storedColumns });
 
-        this.updateTableHeader();
-      }
     });
   }
   async getData() {
       // Charger les données de l'entité à partir de la base de données locale
-      this.entityData = await localDb.getAllData(this.entityName!);
-      if(!this.entityData?.length){
-        let datas: any
-        if(this.entityName === 'movies') datas = movies
-        if(this.entityName === 'places') datas = places
-        if(this.entityName === 'users') datas = users
-
-        for (let index = 0; index < datas.length; index++) {
-          const element = datas[index];
-          await localDb.addData(this.entityName!, element)
-          
-        }
+      let service : any
+      if(this.entityName === 'movies'){
+        service = this.movieService
+      }else if(this.entityName === 'places'){
+        service = this.placeService
+      }else if(this.entityName === 'users'){
+        service = this.userService
       }
+
+      service.getAllEntities().subscribe(
+        (datas: any[]) => {
+
+          this.entityData = datas
+          
+          if (this.entityData?.length) {
+            // Charger les colonnes sélectionnées à partir du localStorage ou afficher les 2 premières colonnes par défaut
+            const storedColumnsString = localStorage.getItem(this.entityName!);
+            const storedColumns = storedColumnsString ? JSON.parse(storedColumnsString) : Object.keys(this.entityData[0]).slice(0, 2);
+            this.selectedColumns[this.entityName!] = storedColumns;
+            console.log({ storedColumns });
+
+            this.updateTableHeader();
+          }
+
+          for (let index = 0; index < datas.length; index++) {
+            const element = datas[index];
+            if(element){
+              localDb.addData(this.entityName!, element)
+            }
+          }
+        },
+        (error: any) => {
+          console.error("Une erreur s'est produite lors de la récupération des données :", error);
+          // Vous pouvez ajouter d'autres logiques de gestion d'erreur ici, par exemple, afficher un message d'erreur à l'utilisateur.
+        }
+      );
+
+
+
+
+
   }
 
   updateTableHeader(): void {
@@ -90,7 +123,7 @@ export class AdminComponent {
       this.selectedColumns[this.entityName!].splice(index, 1);
     }
     // Mettre à jour les colonnes sélectionnées dans le localStorage
-    
+
     this.updateTableHeader();
   }
 
@@ -114,7 +147,7 @@ export class AdminComponent {
     this.currentData = item
     console.log("Vue de l'élément : ", item);
   }
-  
+
   addItem(): void {
     this.addData = true
     this.updateData = false
@@ -142,7 +175,7 @@ export class AdminComponent {
     console.log('closeModal');
     await this.getData()
 
-    this.addData = false 
+    this.addData = false
     this.updateData = false
     this.deleteData = false
     this.currentData = undefined

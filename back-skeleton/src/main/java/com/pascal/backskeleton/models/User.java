@@ -1,6 +1,4 @@
 package com.pascal.backskeleton.models;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +23,11 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "birthdate")
-    private Date birthdate;
+    private Timestamp birthdate;
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -37,22 +39,26 @@ public class User {
     @Column(name = "image")
     private byte[] image;
 
+    @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
+    private Timestamp updatedAt;
+
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
-    // Getters and setters
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, Date birthdate, String username, String password, byte[] image, Timestamp createdAt) {
+    public User(Long id, String firstName, String lastName, String email, Timestamp birthdate, String username, String password, byte[] image, Timestamp updatedAt, Timestamp createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.birthdate = birthdate;
         this.username = username;
         this.password = password;
         this.image = image;
+        this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
 
@@ -80,11 +86,19 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirthdate() {
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Timestamp getBirthdate() {
         return this.birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(Timestamp birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -112,6 +126,14 @@ public class User {
         this.image = image;
     }
 
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Timestamp getCreatedAt() {
         return this.createdAt;
     }
@@ -135,7 +157,12 @@ public class User {
         return this;
     }
 
-    public User birthdate(Date birthdate) {
+    public User email(String email) {
+        setEmail(email);
+        return this;
+    }
+
+    public User birthdate(Timestamp birthdate) {
         setBirthdate(birthdate);
         return this;
     }
@@ -155,24 +182,32 @@ public class User {
         return this;
     }
 
+    public User updatedAt(Timestamp updatedAt) {
+        setUpdatedAt(updatedAt);
+        return this;
+    }
+
     public User createdAt(Timestamp createdAt) {
         setCreatedAt(createdAt);
         return this;
     }
 
+
+    // Constructeurs, getters et setters...
+
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", birthdate='" + getBirthdate() + "'" +
-            ", username='" + getUsername() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", image='" + getImage() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            "}";
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", birthdate=" + birthdate +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", image=" + (image != null ? "present" : "not present") +
+                ", updatedAt=" + updatedAt +
+                ", createdAt=" + createdAt +
+                '}';
     }
-    
-
 }
