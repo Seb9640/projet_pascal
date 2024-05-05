@@ -1,5 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { localDb } from 'db/local';
+import { MovieService } from 'services/movie.service';
+import { PlaceService } from 'services/place.service';
+import { ReviewService } from 'services/review.service';
+import { UserService } from 'services/user.service';
 
 @Component({
   selector: 'confirm-modal',
@@ -16,7 +20,12 @@ export class ConfirmModalComponent implements OnInit {
   modal?: any
   name: string = ''
 
-  constructor() {
+  constructor(
+    private movieService: MovieService,
+    private placeService: PlaceService,
+    private userService: UserService,
+    private reviewService: ReviewService,
+  ) {
 
   }
 
@@ -38,6 +47,24 @@ export class ConfirmModalComponent implements OnInit {
 
   confirmDeletion() {
     localDb.deleteData(this.entityName!, this.entity.id!)
+    let service: any;
+
+    if (this.entityName === "review") {
+      service = this.reviewService
+    } else if (this.entityName === "places") {
+      service = this.placeService
+    } else if (this.entityName === "users") {
+      service = this.userService
+    } else if (this.entityName === "movies") {
+      service = this.movieService
+    }
+
+    service.deleteEntity(this.entity.id!).subscribe(
+      (deletedData: any)=>{
+        console.log({deletedData});
+
+      }
+    )
     this.modal.hide();
     this.closeModal.emit(null)
   }

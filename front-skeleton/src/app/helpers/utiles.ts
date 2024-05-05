@@ -23,3 +23,11 @@ export function fileToBlob(file: File): Promise<Blob> {
     return url;
 }
 
+export function removePluralSuffix(str: string): string {
+  if (str.endsWith('s')) {
+      return str.slice(0, -1); // Retourne la chaîne sans le dernier caractère
+  } else {
+      return str; // Retourne la chaîne inchangée si elle ne se termine pas par 's'
+  }
+}
+

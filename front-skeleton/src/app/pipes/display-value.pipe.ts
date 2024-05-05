@@ -14,6 +14,16 @@ export class DisplayValuePipe implements PipeTransform {
     } else if (typeof value === 'string' && value.startsWith('assets')) {
       return `<img src='${value}' width='100' height='80' alt='${key}' />`;
     }
+    else if (['birthdate', 'updatedat', 'createdat'].includes(key.toLowerCase())) {
+      return (new Date(value as string)).toLocaleDateString()
+    }
+    else if (key.toLowerCase() === 'password') {
+      let result = ""
+      for (let index = 0; index < key.length; index++) {
+        result += "*"
+      }
+      return result
+    }
 
     return value;
   }

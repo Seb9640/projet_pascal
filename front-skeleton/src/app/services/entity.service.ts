@@ -24,7 +24,7 @@ export class EntityService<T extends { id?: number }> {
     return this.http.get<T>(`${this.apiUrl}/${id}`);
   }
 //
-  addEntity(entity: T): Observable<T> {
+  addEntity(entity: any): Observable<any> {
     return this.http.post<T>(`${this.apiUrl}`, entity);
   }
 

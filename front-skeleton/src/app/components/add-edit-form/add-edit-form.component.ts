@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { localDb } from 'db/local';
-import { fileToBlob } from 'helpers/utiles';
+import { fileToBlob, removePluralSuffix } from 'helpers/utiles';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';
 import { ReviewService } from 'services/review.service';
@@ -96,13 +96,14 @@ export class AddEditFormComponent implements OnInit {
     if (this.form?.valid) {
       console.log(this.form.value);
       const data: any = { ...this.form.value, ...this.selectedFiles };
+      const formData = new FormData()
 
       // Conversion des fichiers en Blob avant de les sauvegarder
       for (const key in data) {
         if (data[key] instanceof File) {
           const file: File = data[key];
           console.log({ file });
-
+          formData.append(key, file)
           const blob = await fileToBlob(file);
           data[key] = blob;
         }
@@ -126,7 +127,8 @@ export class AddEditFormComponent implements OnInit {
         service = this.movieService
       }
 
-      console.log(data);
+      // console.log(data);
+
 
 
       if (this.entity && !(this.entityName === "review")) {
@@ -139,13 +141,22 @@ export class AddEditFormComponent implements OnInit {
             }
           }
         }
-        data.updated_at = new Date()
-        localDb.updateData(this.entityName!, data);
+        data.updatedAt = new Date()
+        formData.append('movie', JSON.stringify(data))
+        service.updateEntity(data).subscribe(
+          (data: any)=>{
+            console.log(data);
+
+          }
+        )
+        // localDb.updateData(this.entityName!, data);
       } else {
         // add
-        data.created_at = new Date()
+        data.createdAt = new Date()
+
+        formData.append('movie', JSON.stringify(data))
         // localDb.addData(this.entityName!, data);
-        service.addEntity(data).subscribe(
+        service.addEntity(formData).subscribe(
           (data: any)=>{
             console.log(data);
 
