@@ -1,6 +1,7 @@
 // Modèle pour la table des avis
 export interface Review {
     id?: number;
+    user?: any;
     user_id?: number;
     entity_id?: number;
     entity_type?: 'movie' | 'place';
@@ -10,6 +11,6 @@ export interface Review {
     summary: string | null;
     review: string | null;
     image: string | null;
-    updated_at?: string | null;
-    created_at?: string;
+    updatedAt?: string| Date | null;
+    createdAt?: string| Date;
 }

@@ -1,10 +1,50 @@
 <div class="container py-3">
 
     <div class="page p-1">
-        <div class=" row">
+        <div class="row" *ngIf="entityName === 'movies'">
             <div class="col-md-6">
                 <div class="entity-image d-flex justify-content-center">
-                    <img [src]="(entity.poster_url | getLink)  || 'http://placehold.it/150x400'" height="400px" />
+                    <img [src]="(entity.posterUrl | getLink)  || 'http://placehold.it/150x400'" height="400px" />
+                </div>
+
+            </div>
+            <div class="col-md-6">
+
+                <h2 class="card-title mb-1">
+                    <strong>{{ entity.title }}</strong>
+                </h2>
+
+               
+
+                <review-box [note]="entity?.rating || 2" />
+
+                <p>
+                    {{entity.synopsis}}
+                </p>
+                <div>
+                    <strong>Director :</strong> {{ entity.director }}
+                </div>
+                <div>
+                    <strong>Année publication :</strong> {{ entity.releaseDate | date:'dd/MM/yyyy' }}
+                </div>
+                <a class="btn btn-primary w-100 my-3" (click)="goBack()">
+                    Retour
+                </a>
+                <!-- <div class="d-flex gap-2 py-2">
+                    <button class="btn btn-primary w-100" (click)="addReview(entity)" >
+                        Noter
+                    </button>
+                    <button class="btn btn-danger w-100">
+                        Avis
+                    </button>
+                </div> -->
+
+            </div>
+        </div>
+        <div class="row" *ngIf="entityName === 'places'">
+            <div class="col-md-6">
+                <div class="entity-image d-flex justify-content-center">
+                    <img [src]="(entity.imageUrl | getLink)  || 'http://placehold.it/150x400'" height="400px" />
                 </div>
 
             </div>
@@ -25,11 +65,12 @@
                     {{entity.synopsis}}
                 </p>
                 <div>
-                    <strong>Director :</strong> {{ entity.director}}
+                    <strong>Addresse :</strong> {{ entity.address }}
                 </div>
                 <div>
-                    <strong>Année publication :</strong> {{ entity.release_date}}
+                    <strong>Heure d'ouverture :</strong> {{ entity.openingHours   }}
                 </div>
+
                 <a class="btn btn-primary w-100 my-3" (click)="goBack()">
                     Retour
                 </a>

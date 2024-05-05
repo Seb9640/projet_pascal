@@ -28,6 +28,7 @@ import { ReviewBoxComponent } from "components/review-box/review-box.component"
 import { ReviewListComponent } from "components/review-list/review-list.component"
 import { ViewModalComponent } from "components/view-modal/view-modal.component"
 import { EntityItemComponent } from "components/entity-item/entity-item.component"
+import { ViewReviewModalComponent } from "components/view-review-modal/view-review-modal.component"
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { EntityItemComponent } from "components/entity-item/entity-item.componen
     ReviewBoxComponent,
     ReviewListComponent,
     ViewModalComponent,
-    EntityItemComponent
+    EntityItemComponent,
+    ViewReviewModalComponent
   ],
   imports: [
     BrowserModule,

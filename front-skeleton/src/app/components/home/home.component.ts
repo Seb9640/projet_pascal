@@ -15,6 +15,8 @@ import { ReviewService } from "services/review.service";
 export class HomeComponent implements OnInit {
   popularAllReviews: any[] = [];
   popularReviews: any[] = [];
+  readMore: boolean = false
+  currentReviewId?: string
 
   constructor(private reviewService: ReviewService) { }
 
@@ -61,6 +63,16 @@ export class HomeComponent implements OnInit {
     }
     this.popularReviews = this.popularAllReviews.filter(d => d.entityType === type)
 
+  }
+
+  setReadMore(id: string){
+    this.readMore = true
+    this.currentReviewId = id
+  }
+
+  closeModal(){
+    this.readMore = false
+    this.currentReviewId = undefined
   }
 
 }

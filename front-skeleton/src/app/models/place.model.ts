@@ -6,6 +6,6 @@ export interface Place {
     address: string | null;
     image_Url: string | null;
     opening_hours: string | null;
-    updated_at: string | null;
-    created_at: string;
+    updatedAt?: string| Date | null;
+    createdAt?: string| Date;
 }

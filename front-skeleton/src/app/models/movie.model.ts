@@ -6,6 +6,6 @@ export interface Movie {
   release_date: string | null;
   synopsis: string | null;
   poster_url: string | null;
-  updated_at: string | null;
-  created_at: string;
+  updatedAt?: string| Date | null;
+  createdAt?: string| Date;
 }

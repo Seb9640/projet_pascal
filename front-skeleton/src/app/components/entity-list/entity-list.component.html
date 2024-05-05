@@ -27,7 +27,7 @@
                     <img [src]="(entity.posterUrl | getLink)" width="100%" height="400px"/>
                 </div>
                 <div class="card-body">
-                    <a [routerLink]="[ '/films', entity.id ]">
+                    <a [routerLink]="[ '/entity','movies', entity.id ]">
                         <h3 class="card-title mb-1">
                             <strong>{{ entity.title }}</strong>
                         </h3>
@@ -52,7 +52,7 @@
                     <img [src]="(entity.imageUrl | getLink) || 'http://placehold.it/150lieux'" width="100%" height="400px"/>
                 </div>
                 <div class="card-body">
-                    <a [routerLink]="[ '/films', entity.id ]">
+                    <a [routerLink]="[ '/entity', 'places', entity.id ]">
                         <h3 class="card-title mb-1">
                             <strong>{{ entity.title }}</strong>
                         </h3>

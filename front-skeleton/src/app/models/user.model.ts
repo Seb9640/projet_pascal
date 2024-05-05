@@ -4,10 +4,10 @@ export interface User {
     first_name: string;
     last_name: string;
     birthdate: string | null;
-    username: string; // 
-    email: string; // 
+    username: string; //
+    email: string; //
     password: string;
     image: Buffer | null;
-    updated_at: string | null;
-    created_at: string;
+    updatedAt?: string| Date | null;
+    createdAt?: string| Date;
 }

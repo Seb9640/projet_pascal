@@ -12,8 +12,8 @@ export const reviews = [
     "summary": "Great movie!",
     "review": "I really enjoyed watching this movie. It had a great storyline and amazing performances.",
     "image": "https://example.com/image1.jpg",
-    "updated_at": "2024-05-05T12:00:00Z",
-    "created_at": "2024-05-05T10:30:00Z"
+    "updatedAt": "2024-05-05T12:00:00Z",
+    "createdAt": "2024-05-05T10:30:00Z"
   },
   {
     "id": 2,
@@ -26,8 +26,8 @@ export const reviews = [
     "summary": "Fantastic experience!",
     "review": "I visited this place with my family and we had an amazing time. The staff was friendly and the atmosphere was great.",
     "image": null,
-    "updated_at": null,
-    "created_at": "2024-05-04T15:45:00Z"
+    "updatedAt": null,
+    "createdAt": "2024-05-04T15:45:00Z"
   },
   {
     "id": 3,
@@ -40,8 +40,8 @@ export const reviews = [
     "summary": null,
     "review": "The movie was okay. It didn't quite meet my expectations.",
     "image": null,
-    "updated_at": null,
-    "created_at": "2024-05-03T09:20:00Z"
+    "updatedAt": null,
+    "createdAt": "2024-05-03T09:20:00Z"
   },
   {
     "id": 4,
@@ -54,8 +54,8 @@ export const reviews = [
     "summary": "Nice place to visit",
     "review": "I had a pleasant experience visiting this place. Would recommend it to others.",
     "image": "https://example.com/image2.jpg",
-    "updated_at": null,
-    "created_at": "2024-05-02T18:10:00Z"
+    "updatedAt": null,
+    "createdAt": "2024-05-02T18:10:00Z"
   },
   {
     "id": 5,
@@ -68,8 +68,8 @@ export const reviews = [
     "summary": "Must-watch!",
     "review": "This movie is a must-watch! It kept me engaged from start to finish.",
     "image": null,
-    "updated_at": "2024-05-01T14:20:00Z",
-    "created_at": "2024-04-30T20:05:00Z"
+    "updatedAt": "2024-05-01T14:20:00Z",
+    "createdAt": "2024-04-30T20:05:00Z"
   },
   {
     "id": 6,
@@ -82,8 +82,8 @@ export const reviews = [
     "summary": null,
     "review": "The place was nice but a bit crowded. Overall, it was an okay experience.",
     "image": null,
-    "updated_at": null,
-    "created_at": "2024-04-29T12:30:00Z"
+    "updatedAt": null,
+    "createdAt": "2024-04-29T12:30:00Z"
   },
   {
     "id": 7,
@@ -96,8 +96,8 @@ export const reviews = [
     "summary": "Enjoyable movie",
     "review": "I enjoyed watching this movie with my friends. It had some unexpected twists.",
     "image": "https://example.com/image3.jpg",
-    "updated_at": "2024-04-28T16:40:00Z",
-    "created_at": "2024-04-27T21:15:00Z"
+    "updatedAt": "2024-04-28T16:40:00Z",
+    "createdAt": "2024-04-27T21:15:00Z"
   },
   {
     "id": 8,
@@ -110,8 +110,8 @@ export const reviews = [
     "summary": "Disappointing experience",
     "review": "I was disappointed with my experience at this place. The service was slow and the food was not good.",
     "image": null,
-    "updated_at": "2024-04-26T11:55:00Z",
-    "created_at": "2024-04-25T17:30:00Z"
+    "updatedAt": "2024-04-26T11:55:00Z",
+    "createdAt": "2024-04-25T17:30:00Z"
   },
   {
     "id": 9,
@@ -124,8 +124,8 @@ export const reviews = [
     "summary": null,
     "review": "Absolutely loved this movie! It was one of the best movies I've seen in a while.",
     "image": null,
-    "updated_at": "2024-04-24T09:10:00Z",
-    "created_at": "2024-04-23T22:25:00Z"
+    "updatedAt": "2024-04-24T09:10:00Z",
+    "createdAt": "2024-04-23T22:25:00Z"
   },
   {
     "id": 10,
@@ -138,7 +138,7 @@ export const reviews = [
     "summary": "Good place for a family outing",
     "review": "Visited this place with my family and we had a great time. The facilities were clean and well-maintained.",
     "image": "https://example.com/image4.jpg",
-    "updated_at": "2024-04-22T13:20:00Z",
-    "created_at": "2024-04-21T18:45:00Z"
+    "updatedAt": "2024-04-22T13:20:00Z",
+    "createdAt": "2024-04-21T18:45:00Z"
   }
 ]

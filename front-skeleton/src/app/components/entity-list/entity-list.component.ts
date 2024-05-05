@@ -50,7 +50,7 @@ export class EntityListComponent implements OnInit {
       this.currentPage = params['page'] ? +params['page'] : 1;
     });
     this.route.params.subscribe(async params => {
-      this.entityName = params['model'] || 'entities';
+      this.entityName = params['model'] || 'movies';
       this.entityId = params['id'];
 
       // Charger les données de l'entité à partir de la base de données locale

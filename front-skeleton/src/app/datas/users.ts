@@ -11,8 +11,8 @@ export const users: User[] = [
         email: "john@example.com",
         password: "password123",
         image: null,
-        updated_at: "2024-04-30T12:00:00Z",
-        created_at: "2024-04-30T10:00:00Z"
+        updatedAt: "2024-04-30T12:00:00Z",
+        createdAt: "2024-04-30T10:00:00Z"
     },
     {
         id: 2,
@@ -23,8 +23,8 @@ export const users: User[] = [
         email: "alice@example.com",
         password: "securepwd",
         image: null,
-        updated_at: "2024-04-29T15:30:00Z",
-        created_at: "2024-04-29T13:00:00Z"
+        updatedAt: "2024-04-29T15:30:00Z",
+        createdAt: "2024-04-29T13:00:00Z"
     },
     {
         id: 3,
@@ -35,8 +35,8 @@ export const users: User[] = [
         email: "emily@example.com",
         password: "userpass",
         image: null,
-        updated_at: null,
-        created_at: "2024-04-28T18:45:00Z"
+        updatedAt: null,
+        createdAt: "2024-04-28T18:45:00Z"
     },
     {
         id: 4,
@@ -47,8 +47,8 @@ export const users: User[] = [
         email: "mike@example.com",
         password: "pass1234",
         image: null,
-        updated_at: "2024-04-27T09:15:00Z",
-        created_at: "2024-04-26T17:30:00Z"
+        updatedAt: "2024-04-27T09:15:00Z",
+        createdAt: "2024-04-26T17:30:00Z"
     },
     {
         id: 5,
@@ -59,8 +59,8 @@ export const users: User[] = [
         email: "emma@example.com",
         password: "emma123",
         image: null,
-        updated_at: "2024-04-26T14:20:00Z",
-        created_at: "2024-04-25T12:45:00Z"
+        updatedAt: "2024-04-26T14:20:00Z",
+        createdAt: "2024-04-25T12:45:00Z"
     },
     {
         id: 6,
@@ -71,8 +71,8 @@ export const users: User[] = [
         email: "david@example.com",
         password: "davidpass",
         image: null,
-        updated_at: "2024-04-25T08:30:00Z",
-        created_at: "2024-04-24T17:20:00Z"
+        updatedAt: "2024-04-25T08:30:00Z",
+        createdAt: "2024-04-24T17:20:00Z"
     },
     {
         id: 7,
@@ -83,8 +83,8 @@ export const users: User[] = [
         email: "sophia@example.com",
         password: "sophia456",
         image: null,
-        updated_at: "2024-04-24T16:10:00Z",
-        created_at: "2024-04-23T11:20:00Z"
+        updatedAt: "2024-04-24T16:10:00Z",
+        createdAt: "2024-04-23T11:20:00Z"
     },
     {
         id: 8,
@@ -95,8 +95,8 @@ export const users: User[] = [
         email: "ethan@example.com",
         password: "ethanpass",
         image: null,
-        updated_at: "2024-04-23T15:40:00Z",
-        created_at: "2024-04-22T21:15:00Z"
+        updatedAt: "2024-04-23T15:40:00Z",
+        createdAt: "2024-04-22T21:15:00Z"
     },
     {
         id: 9,
@@ -107,8 +107,8 @@ export const users: User[] = [
         email: "isabella@example.com",
         password: "bella123",
         image: null,
-        updated_at: "2024-04-22T08:20:00Z",
-        created_at: "2024-04-21T17:15:00Z"
+        updatedAt: "2024-04-22T08:20:00Z",
+        createdAt: "2024-04-21T17:15:00Z"
     },
     {
         id: 10,
@@ -119,8 +119,8 @@ export const users: User[] = [
         email: "mason@example.com",
         password: "masonpass",
         image: null,
-        updated_at: "2024-04-21T11:30:00Z",
-        created_at: "2024-04-20T16:20:00Z"
+        updatedAt: "2024-04-21T11:30:00Z",
+        createdAt: "2024-04-20T16:20:00Z"
     },
     {
         id: 11,
@@ -131,8 +131,8 @@ export const users: User[] = [
         email: "amelia@example.com",
         password: "amelia456",
         image: null,
-        updated_at: "2024-04-20T13:50:00Z",
-        created_at: "2024-04-19T18:45:00Z"
+        updatedAt: "2024-04-20T13:50:00Z",
+        createdAt: "2024-04-19T18:45:00Z"
     },
     {
         id: 12,
@@ -143,8 +143,8 @@ export const users: User[] = [
         email: "liam@example.com",
         password: "liam1234",
         image: null,
-        updated_at: "2024-04-19T16:30:00Z",
-        created_at: "2024-04-18T20:15:00Z"
+        updatedAt: "2024-04-19T16:30:00Z",
+        createdAt: "2024-04-18T20:15:00Z"
     },
     {
         id: 13,
@@ -155,8 +155,8 @@ export const users: User[] = [
         email: "olivia@example.com",
         password: "olivia567",
         image: null,
-        updated_at: "2024-04-18T09:40:00Z",
-        created_at: "2024-04-17T14:35:00Z"
+        updatedAt: "2024-04-18T09:40:00Z",
+        createdAt: "2024-04-17T14:35:00Z"
     },
     {
         id: 14,
@@ -167,8 +167,8 @@ export const users: User[] = [
         email: "noah@example.com",
         password: "noahpass",
         image: null,
-        updated_at: "2024-04-17T11:20:00Z",
-        created_at: "2024-04-16T16:30:00Z"
+        updatedAt: "2024-04-17T11:20:00Z",
+        createdAt: "2024-04-16T16:30:00Z"
     },
     {
         id: 15,
@@ -179,8 +179,8 @@ export const users: User[] = [
         email: "ava@example.com",
         password: "avapass",
         image: null,
-        updated_at: "2024-04-16T08:50:00Z",
-        created_at: "2024-04-15T17:25:00Z"
+        updatedAt: "2024-04-16T08:50:00Z",
+        createdAt: "2024-04-15T17:25:00Z"
     },
     {
         id: 16,
@@ -191,8 +191,8 @@ export const users: User[] = [
         email: "will@example.com",
         password: "will123",
         image: null,
-        updated_at: "2024-04-15T14:30:00Z",
-        created_at: "2024-04-14T19:10:00Z"
+        updatedAt: "2024-04-15T14:30:00Z",
+        createdAt: "2024-04-14T19:10:00Z"
     }
 ];
 

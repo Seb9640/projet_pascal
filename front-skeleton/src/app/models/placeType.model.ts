@@ -2,6 +2,6 @@
 export interface PlaceType {
     id: number;
     name: string;
-    updated_at: string | null;
-    created_at: string;
+    updatedAt?: string| Date | null;
+    createdAt?: string| Date;
 }
