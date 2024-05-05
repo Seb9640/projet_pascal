@@ -22,7 +22,6 @@ INSERT INTO movies (id, title, director, release_date, synopsis, poster_url, upd
   (15, 'Le Seigneur des Anneaux: La Communauté de l''Anneau', 'Peter Jackson', '2001-01-01', 'Le Seigneur des anneaux : La Communauté de l''anneau (The Lord of The Rings: The Fellowship of the Ring) est un film américano-néo-zélandais réalisé par Peter Jackson, sorti en 2001. C''est le premier volet de la trilogie Le Seigneur des anneaux et l''adaptation du livre La Communauté de l''Anneau de J. R. R. Tolkien. L''histoire commence lorsque, sur la Terre du Milieu, le magicien Gandalf le Gris (Ian McKellen) découvre que l''anneau que possède le jeune Hobbit Frodon Sacquet (Elijah Wood), qui lui a été légué par son oncle Bilbon et qui lui permet de se rendre invisible, est en réalité l''Anneau unique recherché avidement par le seigneur ténébreux Sauron car il lui permettrait de retrouver toute sa puissance. Afin d''éviter que Sauron ne récupère l''anneau, Frodon et ses huit compagnons, la Communauté de l''Anneau, entament un périlleux voyage dans le but de le détruire...', 'assets/images/movies/la_communaute_de_lanneau.jpg', NULL, '2024-05-04');
 
 
-
 INSERT INTO places (id, title, image_Url, address, opening_hours, updated_at, created_at) VALUES
 (1, 'Le Louvre', 'assets/images/places/1.png', 'Rue de Rivoli, 75001 Paris', '9h-18h', NULL, '2024-04-30'),
 (2, 'Tour Eiffel', 'assets/images/places/2.png', 'Champ de Mars, 5 Avenue Anatole France, 75007 Paris', '9h30-23h45', NULL, '2024-04-30'),
@@ -34,6 +33,7 @@ INSERT INTO places (id, title, image_Url, address, opening_hours, updated_at, cr
 (8, 'Parc Astérix', 'assets/images/places/8.png', '60128 Plailly', 'Selon calendrier d''ouverture', NULL, '2024-04-30'),
 (9, 'Musée du Louvre-Lens', 'assets/images/places/9.png', '99 Rue Paul Bert, 62300 Lens', '10h-18h', NULL, '2024-04-30'),
 (10, 'Puy du Fou', 'assets/images/places/10.png', '85590 Les Epesses', 'Selon calendrier d''ouverture', NULL, '2024-04-30');
+
 
 
 INSERT INTO users (id, first_name, last_name, birthdate, username, email, password, image, updated_at, created_at) VALUES
@@ -53,6 +53,7 @@ INSERT INTO users (id, first_name, last_name, birthdate, username, email, passwo
 (14, 'Noah', 'Scott', '1993-10-22', 'noahscott', 'noah@example.com', 'noahpass', NULL, '2024-04-17T11:20:00Z', '2024-04-16T16:30:00Z'),
 (15, 'Ava', 'Green', '1986-07-08', 'avagreen', 'ava@example.com', 'avapass', NULL, '2024-04-16T08:50:00Z', '2024-04-15T17:25:00Z'),
 (16, 'William', 'Baker', '1996-02-14', 'willbaker', 'will@example.com', 'will123', NULL, '2024-04-15T14:30:00Z', '2024-04-14T19:10:00Z');
+
 
 
 

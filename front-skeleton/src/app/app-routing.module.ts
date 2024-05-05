@@ -8,6 +8,7 @@ import { SigninComponent } from "components/signin/signin.component"
 import { SignupComponent } from "components/signup/signup.component"
 import { AboutComponent } from "pages/about/about.component"
 import { AdminComponent } from "pages/admin/admin.component"
+import { ContactComponent } from "pages/contact/contact.component"
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: "admin", component: AdminComponent },
   { path: "admin/:entityName", component: AdminComponent },
   { path: "admin/:entityName/:entityId", component: AdminComponent },
+  { path: "contact", component: ContactComponent },
   { path: "error-page", component: ErrorPageComponent },
   { path: "**", component: ErrorPageComponent },
 ]

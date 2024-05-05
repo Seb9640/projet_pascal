@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+
+
 -- Ajouter une contrainte d'unicité pour s'assurer qu'un utilisateur ne peut laisser 
 -- qu'un seul avis par entité
 ALTER TABLE reviews ADD CONSTRAINT unique_user_entity UNIQUE (user_id, entity_id, entity_type);
