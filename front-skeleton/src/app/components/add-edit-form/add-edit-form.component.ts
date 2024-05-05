@@ -2,6 +2,10 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { localDb } from 'db/local';
 import { fileToBlob } from 'helpers/utiles';
+import { MovieService } from 'services/movie.service';
+import { PlaceService } from 'services/place.service';
+import { ReviewService } from 'services/review.service';
+import { UserService } from 'services/user.service';
 
 @Component({
   selector: 'add-edit-form',
@@ -22,13 +26,19 @@ export class AddEditFormComponent implements OnInit {
 
   form?: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private movieService: MovieService,
+    private placeService: PlaceService,
+    private userService: UserService,
+    private reviewService: ReviewService,
+  ) {
 
   }
   ngOnInit(): void {
     this.showModal();
     console.log([this.model, this.entity, this.entityName]);
-    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType' ];
+    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType'];
     this.inputs = Object.keys(this.model).filter(key => !notAllowed.includes(key));
 
     const defaultValue: any = {};
@@ -40,7 +50,7 @@ export class AddEditFormComponent implements OnInit {
       }
     });
     this.form = this.fb.group(defaultValue);
-    console.log({entityName:this.entityName, entity:this.entity, model: this.model});
+    console.log({ entityName: this.entityName, entity: this.entity, model: this.model });
 
   }
 
@@ -53,7 +63,7 @@ export class AddEditFormComponent implements OnInit {
   inputType(name: string): string {
     const lowerCaseName = name.toLowerCase();
 
-    if (["synopsis", "content", 'opening_hours', 'review' ].includes(lowerCaseName)) {
+    if (["synopsis", "content", 'opening_hours', 'review'].includes(lowerCaseName)) {
       return 'text';
     } else if (['image', 'posterurl', 'imageurl'].includes(lowerCaseName)) {
       return 'file';
@@ -98,21 +108,33 @@ export class AddEditFormComponent implements OnInit {
         }
       }
 
-      console.log({ data });
-      if(this.entityName === "review"){
+      let service: any;
+
+
+
+
+
+      if (this.entityName === "review") {
         data.entity_id = this.model.entity_id
         data.entity_type = this.model.entity_type
+        service = this.reviewService
+      } else if (this.entityName === "places") {
+        service = this.placeService
+      } else if (this.entityName === "users") {
+        service = this.userService
+      } else if (this.entityName === "movies") {
+        service = this.movieService
       }
 
       console.log(data);
 
 
-      if (this.entity) {
+      if (this.entity && !(this.entityName === "review")) {
         // update
         data.id = this.entity.id;
         for (const key in data) {
           if (this.inputType(key) === "file") {
-            if (!(data[key]  instanceof Blob)) {
+            if (!(data[key] instanceof Blob)) {
               data[key] = this.entity[key]
             }
           }
@@ -122,10 +144,16 @@ export class AddEditFormComponent implements OnInit {
       } else {
         // add
         data.created_at = new Date()
-        localDb.addData(this.entityName!, data);
+        // localDb.addData(this.entityName!, data);
+        service.addEntity(data).subscribe(
+          (data: any)=>{
+            console.log(data);
+
+          }
+        )
       }
-      this.closeModal.emit(data);
-      this.modal.hide();
+      // this.closeModal.emit(data);
+      // this.modal.hide();
     }
   }
 
