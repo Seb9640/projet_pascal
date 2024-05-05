@@ -26,6 +26,7 @@ export class EntityListComponent implements OnInit {
   searchTerm: string = ''; // Terme de recherche
   AddEditReview: boolean = false
   isDisplayReview: boolean = false
+  isLoading: boolean = true
   currentData: any
   title?: string
   currentReviews?: any[]
@@ -58,15 +59,14 @@ export class EntityListComponent implements OnInit {
       if(this.entityName === 'movies'){
         this.entitieService.getAllEntities().subscribe(
           (movies: Movie[])=>{
-            console.log({movies });
-
+            this.isLoading = false
             this.entities = movies
           }
         )
       }else if(this.entityName === 'places'){
         this.placeService.getAllEntities().subscribe(
           (places: Place[])=>{
-            console.log({places});
+            this.isLoading = false
             this.entities = places
           }
         )

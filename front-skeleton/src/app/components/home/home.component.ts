@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   popularAllReviews: any[] = [];
   popularReviews: any[] = [];
   readMore: boolean = false
+  isLoading: boolean = true
   currentReviewId?: string
 
   constructor(private reviewService: ReviewService) { }
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
     this.reviewService.getAllEntities().subscribe(
       (reviews) => {
         this.popularAllReviews = reviews
-
+        this.isLoading = false
         // this.popularAllReviews.map(async (review) => {
         //   if(review.entity_type === 'movie'){
         //     review.entity =  await localDb.getData('movies', review.entity_id)
@@ -40,6 +41,7 @@ export class HomeComponent implements OnInit {
 
       },
       (error) => {
+        this.isLoading = false
         console.error(error);
       }
     );

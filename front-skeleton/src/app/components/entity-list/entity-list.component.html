@@ -1,4 +1,5 @@
-<div class="container py-3">
+<loader [isLoading]="isLoading" />
+<div class="container py-3" *ngIf="!isLoading" >
     <h1 *ngIf="entityName === 'movies'" class="title">Films disponibles</h1>
     <h1 *ngIf="entityName === 'places'" class="title">Lieux disponibles</h1>
     <div class="input-group mb-3">

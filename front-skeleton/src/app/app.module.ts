@@ -29,6 +29,7 @@ import { ReviewListComponent } from "components/review-list/review-list.componen
 import { ViewModalComponent } from "components/view-modal/view-modal.component"
 import { EntityItemComponent } from "components/entity-item/entity-item.component"
 import { ViewReviewModalComponent } from "components/view-review-modal/view-review-modal.component"
+import { LoaderComponent } from "components/loader/loader.component"
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { ViewReviewModalComponent } from "components/view-review-modal/view-revi
     ReviewListComponent,
     ViewModalComponent,
     EntityItemComponent,
-    ViewReviewModalComponent
+    ViewReviewModalComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

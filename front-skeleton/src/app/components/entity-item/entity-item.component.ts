@@ -15,6 +15,7 @@ export class EntityItemComponent {
   entity?: any;
   entityName?: string;
   entityId?: string;
+  isLoading: boolean = true
 
   constructor(
     private route: ActivatedRoute,
@@ -43,8 +44,10 @@ export class EntityItemComponent {
       service.getEntityById(this.entityId).subscribe(
         (entity: Movie) => {
           this.entity = entity
+          this.isLoading = false
         },
         (error: any) => {
+          this.isLoading = false
           console.error(error);
         }
       )

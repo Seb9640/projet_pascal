@@ -29,6 +29,7 @@ export class AdminComponent {
   updateData: boolean = false;
   deleteData: boolean = false;
   viewData: boolean = false;
+  isLoading: boolean = true;
   currentData?: any
   // showColumnSelection: boolean = false;
 
@@ -41,17 +42,13 @@ export class AdminComponent {
 
   async ngOnInit(): Promise<void> {
     // Obtenir les paramètres de l'URL
-
     this.route.params.subscribe(async params => {
+      this.isLoading = false
       this.entityName = params['entityName'] || 'movies';
       this.entityId = params['entityId'];
-
-      // Charger les données de l'entité à partir de la base de données locale
-
-
+      // Charger les données de l'entité à partir de l'api'
       await this.getData()
-
-
+      this.isLoading = false
     });
   }
   async getData() {
