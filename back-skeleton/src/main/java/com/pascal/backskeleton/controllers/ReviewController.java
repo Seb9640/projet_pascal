@@ -1,4 +1,5 @@
 package com.pascal.backskeleton.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,8 @@ import com.pascal.backskeleton.models.Review;
 @RequestMapping("/api/reviews")
 public class ReviewController {
 
-    private final ReviewRepository reviewRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     public ReviewController(ReviewRepository reviewRepository) {

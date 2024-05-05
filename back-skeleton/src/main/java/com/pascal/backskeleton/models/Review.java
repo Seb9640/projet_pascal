@@ -27,34 +27,10 @@ public class Review {
 
 
     @Column(name = "full_name", nullable = false)
-    private Long full_name;
-
-    public Long getFullName() {
-        return this.full_name;
-    }
-
-    public void setFullName(Long full_name) {
-        this.full_name = full_name;
-    }
-
-    public Long getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(Long email) {
-        this.email = email;
-    }
+    private String full_name;
 
     @Column(name = "email", nullable = false)
-    private Long email;
-
-    public Long getFull_name() {
-        return this.full_name;
-    }
-
-    public void setFull_name(Long full_name) {
-        this.full_name = full_name;
-    }
+    private String  email;
 
     @Column(name = "entity_type", nullable = false)
     private String entityType;
@@ -62,14 +38,6 @@ public class Review {
     
     @Column(name = "image", nullable = false)
     private String image;
-
-    public String getImage() {
-        return this.image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     @Column(name = "rating", nullable = false)
     private int rating;
@@ -83,6 +51,36 @@ public class Review {
     @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
     private Timestamp updatedAt;
 
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp createdAt;
+
+
+
+    public String getFullName() {
+        return this.full_name;
+    }
+
+    public void setFullName(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+
+    public String getImage() {
+        return this.image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Timestamp getUpdatedAt() {
         return this.updatedAt;
     }
@@ -90,10 +88,6 @@ public class Review {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createdAt;
 
     // Getters and setters
 

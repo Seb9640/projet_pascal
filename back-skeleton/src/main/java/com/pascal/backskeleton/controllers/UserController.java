@@ -36,7 +36,7 @@ public class UserController {
     // Endpoint pour créer un nouvel utilisateur
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        user.setCreatedAt(LocalDateTime.now().toString());
+        user.setCreatedAt(user.getCreatedAt());
         User savedUser = userRepository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
@@ -54,7 +54,7 @@ public class UserController {
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setImage(user.getImage());
-            existingUser.setUpdatedAt(LocalDateTime.now().toString());
+            existingUser.setUpdatedAt(user.getUpdatedAt());
 
             User updatedUser = userRepository.save(existingUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
