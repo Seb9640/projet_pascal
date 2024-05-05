@@ -8,12 +8,13 @@ import { blobToUrl } from 'helpers/utiles';
 export class DisplayValuePipe implements PipeTransform {
 
   transform(value: unknown, key: any): unknown {
-   if(value instanceof Blob){
-    value =  blobToUrl(value)
+    if (value instanceof Blob) {
+      value = blobToUrl(value);
+      return `<img src='${value}' width='100' height='80' alt='${key}' />`;
+    } else if (typeof value === 'string' && value.startsWith('assets')) {
+      return `<img src='${value}' width='100' height='80' alt='${key}' />`;
+    }
 
-    return `<img src='${value}' width='100' height='80' alt='${key}'  />`
-   }
-    
     return value;
   }
 

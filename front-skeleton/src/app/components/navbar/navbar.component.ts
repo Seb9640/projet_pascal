@@ -16,7 +16,7 @@ export class NavbarComponent {
     },
     {
       name: "Films",
-      href: 'films',
+      href: 'movies',
       icon: 'film'
     },
     {
@@ -37,7 +37,7 @@ export class NavbarComponent {
   }
 
   getData() {
-    
+
   }
 
 

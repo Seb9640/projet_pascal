@@ -8,10 +8,15 @@ import { blobToUrl } from 'helpers/utiles';
 export class GetLinkPipe implements PipeTransform {
 
   transform(value: unknown ): unknown {
+    console.log({value});
+
     if(value instanceof Blob){
      return  blobToUrl(value)
+    } else if (typeof value === 'string' && value.startsWith('assets')) {
+      return value;
     }
-     
+
+
      return value;
    }
 

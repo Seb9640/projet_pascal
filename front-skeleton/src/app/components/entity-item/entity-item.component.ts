@@ -5,13 +5,13 @@ import { Movie } from 'models/movie.model';
 import { MovieService } from 'services/movie.service';
 
 @Component({
-  selector: 'film-item',
-  templateUrl: './film-item.component.html',
-  styleUrl: './film-item.component.scss'
+  selector: 'entity-item',
+  templateUrl: './entity-item.component.html',
+  styleUrl: './entity-item.component.scss'
 })
-export class FilmItemComponent {
+export class EntityItemComponent {
 
-  movie?: any;
+  entity?: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,21 +20,21 @@ export class FilmItemComponent {
 
   ngOnInit(): void {
     window.scrollTo(0,0)
-    this.getFilmDetails();
+    this.getEntityDetails();
   }
 
-  async getFilmDetails() {
+  async getEntityDetails() {
     const id = +this.route?.snapshot?.paramMap?.get('id')!;
 
     this.movieService.getEntityById(id).subscribe(
-      (movie: Movie) => {
-        this.movie = movie
+      (entity: Movie) => {
+        this.entity = entity
       },
-      (error) => {
+      (error: any) => {
         console.error(error);
       }
     )
-    // this.movie = await localDb.getData('movies', id)
+    // this.entity = await localDb.getData('entitys', id)
   }
   goBack(): void {
     window.history.back();

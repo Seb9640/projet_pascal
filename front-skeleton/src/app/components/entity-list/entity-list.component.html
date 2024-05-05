@@ -1,8 +1,9 @@
 <div class="container py-3">
-    <h1 class="title">Films disponibles</h1>
+    <h1 *ngIf="entityName === 'movies'" class="title">Films disponibles</h1>
+    <h1 *ngIf="entityName === 'places'" class="title">Lieux disponibles</h1>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Rechercher un film ..." [(ngModel)]="searchTerm" (input)="filterMovies()">
-        <button class="btn btn-outline-primary" type="button" (click)="filterMovies()">Rechercher</button>
+        <input type="text" class="form-control" placeholder="Rechercher {{ entityName === 'movies' ? 'un film' : 'un lieu' }} ..." [(ngModel)]="searchTerm" (input)="filterEntities()">
+        <button class="btn btn-outline-primary" type="button" (click)="filterEntities()">Rechercher</button>
     </div>
     <div class="d-flex justify-content-end mt-3">
         <nav aria-label="Pagination">
@@ -20,27 +21,52 @@
         </nav>
     </div>
     <div class="row justify-content">
-        <div class="col-md-3 mb-2 movie-item" *ngFor="let movie of getMoviesForPage()">
-            <div class="shadow p-1 border">
-                <div class="movie-image">
-                    <img [src]="(movie.poster_url | getLink)  || 'http://placehold.it/150x400'" width="100%" height="400px"/>
+        <div class="col-md-3 mb-2 entity-item" *ngFor="let entity of entities">
+            <div *ngIf="entityName === 'movies'" class="shadow p-1 border">
+                <div class="entity-image">
+                    <img [src]="(entity.posterUrl | getLink)" width="100%" height="400px"/>
                 </div>
                 <div class="card-body">
-                    <a [routerLink]="[ '/films', movie.id ]">
+                    <a [routerLink]="[ '/films', entity.id ]">
                         <h3 class="card-title mb-1">
-                            <strong>{{ movie.title }}</strong>
+                            <strong>{{ entity.title }}</strong>
                         </h3>
                     </a>
-                    <!-- <p class="card-text">{{ movie.movie }}</p> -->
+                    <!-- <p class="card-text">{{ entity.entity }}</p> -->
                     <div class="rating d-flex justify-content-center">
                         <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star"
                             [ngClass]="{ 'filled': star <= 2 }">&#9733;</span>({{ reviews.length }})
                     </div>
                     <div class="d-flex gap-2 py-2">
-                        <button class="btn btn-primary w-100" (click)="addReview(movie)" >
+                        <button class="btn btn-primary w-100" (click)="addReview(entity)" >
                             Noter
                         </button>
-                        <button class="btn btn-danger w-100" (click)="displayReview(movie)">
+                        <button class="btn btn-danger w-100" (click)="displayReview(entity)">
+                            Avis
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="entityName === 'places'" class="shadow p-1 border">
+                <div class="entity-image">
+                    <img [src]="(entity.imageUrl | getLink) || 'http://placehold.it/150lieux'" width="100%" height="400px"/>
+                </div>
+                <div class="card-body">
+                    <a [routerLink]="[ '/films', entity.id ]">
+                        <h3 class="card-title mb-1">
+                            <strong>{{ entity.title }}</strong>
+                        </h3>
+                    </a>
+                    <!-- <p class="card-text">{{ entity.entity }}</p> -->
+                    <div class="rating d-flex justify-content-center">
+                        <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star"
+                            [ngClass]="{ 'filled': star <= 2 }">&#9733;</span>({{ reviews.length }})
+                    </div>
+                    <div class="d-flex gap-2 py-2">
+                        <button class="btn btn-primary w-100" (click)="addReview(entity)" >
+                            Noter
+                        </button>
+                        <button class="btn btn-danger w-100" (click)="displayReview(entity)">
                             Avis
                         </button>
                     </div>
