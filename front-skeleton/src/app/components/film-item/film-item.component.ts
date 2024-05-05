@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { localDb } from 'db/local';
 import { Movie } from 'models/movie.model';
+import { MovieService } from 'services/movie.service';
 
 @Component({
   selector: 'film-item',
@@ -13,7 +14,8 @@ export class FilmItemComponent {
   movie?: any;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private movieService: MovieService,
   ) { }
 
   ngOnInit(): void {
@@ -23,7 +25,16 @@ export class FilmItemComponent {
 
   async getFilmDetails() {
     const id = +this.route?.snapshot?.paramMap?.get('id')!;
-    this.movie = await localDb.getData('movies', id)
+
+    this.movieService.getEntityById(id).subscribe(
+      (movie: Movie) => {
+        this.movie = movie
+      },
+      (error) => {
+        console.error(error);
+      }
+    )
+    // this.movie = await localDb.getData('movies', id)
   }
   goBack(): void {
     window.history.back();

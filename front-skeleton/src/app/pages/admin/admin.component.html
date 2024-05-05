@@ -41,16 +41,16 @@
             Colonnes
           </button>
           <ul class="dropdown-menu">
-            <li *ngFor="let column of entityData![0] | keyvalue">
+            <li *ngFor="let column of modelEntities">
               <a class="dropdown-item" href="#">
                 <div class="form-check form-switch">
                   <input
                   class="form-check-input"
                   type="checkbox"
-                  [checked]="isChecked(column.key)"
+                  [checked]="isChecked(column)"
                   (change)="showColumnSelectionCard($event, column)"
                   />
-                  <label class="form-check-label" for="flexSwitchCheckChecked">{{ column.key }}</label>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">{{ column| column }}</label>
                 </div>
               </a>
             </li>
@@ -114,6 +114,12 @@
 *ngIf="deleteData && currentData"
 [entityName]="entityName"
 [model]="entityData[0]"
+[entity]="currentData"
+(closeModal)="closeModal()"
+/>
+
+<view-modal
+*ngIf="viewData"
 [entity]="currentData"
 (closeModal)="closeModal()"
 />

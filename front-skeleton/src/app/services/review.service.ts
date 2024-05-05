@@ -9,7 +9,7 @@ import { Review } from "../models/review.model";
 export class ReviewService extends EntityService<Review> {
 
   constructor(http: HttpClient) {
-    super(http, 'review');
+    super(http, 'reviews');
   }
 
   // Vous pouvez ajouter des méthodes spécifiques pour les films ici si nécessaire

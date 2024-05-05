@@ -20,13 +20,15 @@ export class AdminComponent {
   entityName?: string;
   entityId?: string;
   entityData: any[] = [];
+  modelEntities: any[] = [];
   tableHeader: string[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 5;
   selectedColumns: { [key: string]: string[] } = {};
-  addData: boolean = false ;
-  updateData: boolean = false ;
-  deleteData: boolean = false ;
+  addData: boolean = false;
+  updateData: boolean = false;
+  deleteData: boolean = false;
+  viewData: boolean = false;
   currentData?: any
   // showColumnSelection: boolean = false;
 
@@ -53,43 +55,44 @@ export class AdminComponent {
     });
   }
   async getData() {
-      // Charger les données de l'entité à partir de la base de données locale
-      let service : any
-      if(this.entityName === 'movies'){
-        service = this.movieService
-      }else if(this.entityName === 'places'){
-        service = this.placeService
-      }else if(this.entityName === 'users'){
-        service = this.userService
-      }
+    // Charger les données de l'entité à partir de la base de données locale
+    let service: any
+    if (this.entityName === 'movies') {
+      service = this.movieService
+    } else if (this.entityName === 'places') {
+      service = this.placeService
+    } else if (this.entityName === 'users') {
+      service = this.userService
+    }
 
-      service.getAllEntities().subscribe(
-        (datas: any[]) => {
+    service.getAllEntities().subscribe(
+      (datas: any[]) => {
 
-          this.entityData = datas
-          
-          if (this.entityData?.length) {
-            // Charger les colonnes sélectionnées à partir du localStorage ou afficher les 2 premières colonnes par défaut
-            const storedColumnsString = localStorage.getItem(this.entityName!);
-            const storedColumns = storedColumnsString ? JSON.parse(storedColumnsString) : Object.keys(this.entityData[0]).slice(0, 2);
-            this.selectedColumns[this.entityName!] = storedColumns;
-            console.log({ storedColumns });
+        this.entityData = datas
+        this.modelEntities = Object.keys(this.entityData[0]);
 
-            this.updateTableHeader();
-          }
+        if (this.entityData?.length) {
+          // Charger les colonnes sélectionnées à partir du localStorage ou afficher les 2 premières colonnes par défaut
+          const storedColumnsString = localStorage.getItem(this.entityName!);
+          const storedColumns = storedColumnsString ? JSON.parse(storedColumnsString) : Object.keys(this.entityData[0]).slice(0, 2);
+          this.selectedColumns[this.entityName!] = storedColumns;
+          console.log({ storedColumns });
 
-          for (let index = 0; index < datas.length; index++) {
-            const element = datas[index];
-            if(element){
-              localDb.addData(this.entityName!, element)
-            }
-          }
-        },
-        (error: any) => {
-          console.error("Une erreur s'est produite lors de la récupération des données :", error);
-          // Vous pouvez ajouter d'autres logiques de gestion d'erreur ici, par exemple, afficher un message d'erreur à l'utilisateur.
+          this.updateTableHeader();
         }
-      );
+
+        for (let index = 0; index < datas.length; index++) {
+          const element = datas[index];
+          if (element) {
+            localDb.addData(this.entityName!, element)
+          }
+        }
+      },
+      (error: any) => {
+        console.error("Une erreur s'est produite lors de la récupération des données :", error);
+        // Vous pouvez ajouter d'autres logiques de gestion d'erreur ici, par exemple, afficher un message d'erreur à l'utilisateur.
+      }
+    );
 
 
 
@@ -103,16 +106,27 @@ export class AdminComponent {
   }
 
   showColumnSelectionCard(event: any, column: any): void {
-    const {checked} = event.target
-    if(checked){
-      if(!this.tableHeader?.includes(column.key)){
-        this.tableHeader?.push(column.key)
+    const { checked } = event.target;
+
+
+    if (checked) {
+      if (!this.tableHeader?.includes(column)) {
+        const index = this.modelEntities.indexOf(column);
+        if (index !== -1) {
+          this.tableHeader?.splice(index, 0, column);
+        }
       }
-    }else{
-      this.tableHeader = this.tableHeader?.filter(value => column.key !== value)
+    } else {
+      const index = this.tableHeader?.indexOf(column);
+      if (index !== -1) {
+        this.tableHeader?.splice(index, 1);
+        this.selectedColumns[this.entityName!] = this.tableHeader;
+      }
     }
-   this.updateTableHeader();
+    this.updateTableHeader();
   }
+
+
   toggleColumn(column: string): void {
     const index = this.selectedColumns[this.entityName!].indexOf(column);
     if (index === -1) {
@@ -127,7 +141,7 @@ export class AdminComponent {
     this.updateTableHeader();
   }
 
-  isChecked(column: any){
+  isChecked(column: any) {
     return this.tableHeader.includes(column)
   }
 
@@ -144,6 +158,10 @@ export class AdminComponent {
 
   viewItem(item: any): void {
     // Implémentez ici la logique pour afficher les détails de l'élément
+    this.addData = false
+    this.updateData = false
+    this.deleteData = false
+    this.viewData = true
     this.currentData = item
     console.log("Vue de l'élément : ", item);
   }
@@ -171,7 +189,7 @@ export class AdminComponent {
     console.log("Suppression de l'élément : ", item);
   }
 
-  async closeModal(){
+  async closeModal() {
     console.log('closeModal');
     await this.getData()
 
@@ -179,6 +197,7 @@ export class AdminComponent {
     this.updateData = false
     this.deleteData = false
     this.currentData = undefined
+    this.viewData = false
   }
 
 }

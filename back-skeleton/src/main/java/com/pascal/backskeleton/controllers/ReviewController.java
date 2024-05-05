@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.pascal.backskeleton.DAO.MovieRepository;
+import com.pascal.backskeleton.DAO.PlaceRepository;
 import com.pascal.backskeleton.DAO.ReviewRepository;
+import com.pascal.backskeleton.models.Movie;
+import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Review;
 
 @RestController
@@ -19,6 +24,12 @@ public class ReviewController {
     private ReviewRepository reviewRepository;
 
     @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Autowired
     public ReviewController(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
@@ -26,6 +37,34 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
+
+        // Filtrer les avis en fonction de la valeur de entityType
+        List<Review> filteredReviews = reviews.stream()
+                .filter(review -> {
+                    Long entityId = review.getEntityId();
+                    if ("movie".equals(review.getEntityType())) {
+                        // Si l'entité est un film, utilisez entity_id pour récupérer les détails du
+                        // film
+                        Movie movie = movieRepository.findById(entityId).orElse(null);
+                        // Vérifiez si le film existe avant de filtrer l'avis
+                        if (movie != null) {
+                            review.setEntity(movie);
+                            return true;
+                        }
+                    } else if ("place".equals(review.getEntityType())) {
+                        // Si l'entité est un lieu, utilisez entity_id pour récupérer les détails du
+                        // lieu
+                        Place place = placeRepository.findById(entityId).orElse(null);
+                        // Vérifiez si le lieu existe avant de filtrer l'avis
+                        if (place != null) {
+                            review.setEntity(place);
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
@@ -33,7 +72,7 @@ public class ReviewController {
     public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
         Optional<Review> optionalReview = reviewRepository.findById(id);
         return optionalReview.map(review -> new ResponseEntity<>(review, HttpStatus.OK))
-                             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping

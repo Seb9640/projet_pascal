@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import movies from "datas/movies";
 import { localDb } from "db/local";
 import { Review } from "models/review.model";
+import { ReviewService } from "services/review.service";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   popularAllReviews: any[] = [];
   popularReviews: any[] = [];
 
-  constructor() { }
+  constructor(private reviewService: ReviewService) { }
 
   ngOnInit(): void {
     window.scrollTo(0,0)
@@ -23,19 +24,42 @@ export class HomeComponent implements OnInit {
   }
 
   async loadPopularReviews() {
-    this.popularAllReviews =  await localDb.getAllData('review')
-    this.popularAllReviews.map(async (review) => {
-      if(review.entity_type === 'movie'){
-        review.entity =  await localDb.getData('movies', review.entity_id)
+    this.reviewService.getAllEntities().subscribe(
+      (reviews) => {
+        this.popularAllReviews = reviews
+
+        // this.popularAllReviews.map(async (review) => {
+        //   if(review.entity_type === 'movie'){
+        //     review.entity =  await localDb.getData('movies', review.entity_id)
+        //   }
+        //   return review
+        // });
+        this.popularReviews = this.popularAllReviews
+
+      },
+      (error) => {
+        console.error(error);
       }
-      return review
-    });
-    this.popularReviews = this.popularAllReviews
+    );
+    // this.popularAllReviews =  await localDb.getAllData('review')
+
   }
 
   setFilterValue(value: number){
+    if(value === 6){
+      this.popularReviews = this.popularAllReviews
+      return
+    }
     this.popularReviews = this.popularAllReviews.filter(d => d.rating === value)
     console.log(this.popularReviews);
+
+  }
+  setFilterType(type: string){
+    if(type === "all"){
+      this.popularReviews = this.popularAllReviews
+      return
+    }
+    this.popularReviews = this.popularAllReviews.filter(d => d.entityType === type)
 
   }
 

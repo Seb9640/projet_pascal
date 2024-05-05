@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "reviews")
@@ -53,6 +54,10 @@ public class Review {
 
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
+
+    // Ajoutez un attribut pour stocker l'entité associée (Movie ou Place)
+    @Transient
+    private Object entity;
 
 
 
@@ -207,6 +212,20 @@ public class Review {
     public Review createdAt(Timestamp createdAt) {
         setCreatedAt(createdAt);
         return this;
+    }
+
+    // Méthode pour définir l'entité en fonction du type
+    public void setEntity(Object entity) {
+        if (entity instanceof Movie) {
+            this.entity = (Movie) entity;
+        } else if (entity instanceof Place) {
+            this.entity = (Place) entity;
+        }
+    }
+
+    // Méthode pour obtenir l'entité associée
+    public Object getEntity() {
+        return entity;
     }
 
     @Override

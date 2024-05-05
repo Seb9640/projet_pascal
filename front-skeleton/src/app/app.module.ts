@@ -27,6 +27,7 @@ import { AddEditReviewComponent } from "components/add-edit-review/add-edit-revi
 import { FilmItemComponent } from "components/film-item/film-item.component"
 import { ReviewBoxComponent } from "components/review-box/review-box.component"
 import { ReviewListComponent } from "components/review-list/review-list.component"
+import { ViewModalComponent } from "components/view-modal/view-modal.component"
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { ReviewListComponent } from "components/review-list/review-list.componen
     AddEditReviewComponent,
     FilmItemComponent,
     ReviewBoxComponent,
-    ReviewListComponent
+    ReviewListComponent,
+    ViewModalComponent
   ],
   imports: [
     BrowserModule,
