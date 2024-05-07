@@ -1,29 +1,26 @@
 # Projet site d'avis
 
-Faire un site web recensant les avis des utilisateurs sur des films/bars/restaurants
+Ce projet consiste à créer un site web permettant aux utilisateurs de donner leur avis sur des films, des bars, des restaurants ou d'autres lieux publics. Le site comprendra à la fois une section publique où les utilisateurs pourront consulter et donner des avis, et une section d'administration où les administrateurs pourront gérer les données du site.
 
-# Le projet
-Votre but est de créer à la fois une section `publique` et une section `administration` pour votre propre site web.
-Créer un site web où les utilisateurs vont noter des films, des lieux publics. Vous êtes libres de choisir ce que les utilisateurs vont pouvoir noter sur votre site. 
+## Fonctionnalités requises
 
-En particulier, les fonctionnalités suivantes seront **requises** :
+### Panneau d'Administration
+- Créer, éditer et supprimer des films ou des lieux publics.
+  - Pour les films, ajouter l'affiche, le nom, le réalisateur, le synopsis et la date de sortie.
+  - Pour les lieux, ajouter le titre, l'adresse et les horaires d'ouverture.
+- Gérer les utilisateurs : créer, modifier et supprimer des comptes. La suppression d'un utilisateur doit également supprimer tous ses avis.
 
-**Panneau d'Administration**
-* Créer / éditer / supprimer des films ou lieux.
-    * Pour des films, pouvoir ajouter l'affiche, le nom, le réalisateur, le synopsis ainsi que la date de sortie
-    * Pour des lieux, pouvoir ajouter le titre, l'adresse, les horaires d'ouverture
-* Pouvoir créer / modifier / supprimer des utilisateurs. Supprimer un utilisateur doit également supprimer ses avis.
+### Partie publique
+- Afficher la liste des lieux/films disponibles.
+- Permettre aux utilisateurs de donner leur avis sur un lieu/film, avec une note, un résumé et éventuellement un avis détaillé.
 
-**Partie publique**
-* Afficher la liste des lieux/films
-* Pouvoir donner un avis sur un lieu/film, avec une note, un résumé et optionnellement un avis détaillé
+## Bonus
 
-Vous n'avez pas à implémenter de quelconque sécurité pour le moment (login / password pour l'administration par exemple).
+Si les fonctionnalités principales sont terminées, voici quelques idées pour améliorer le site :
 
-# Bonus
-Vous avez **déjà tout terminé ?**  
-Voici quelques features qui rendront votre plateforme encore plus attrayante :
-* Afficher le classement du meilleur lieu/film via une moyenne des notes des différents avis
-* Afficher des graphiques sur les notes 
-* Vous amusez pour avoir un front super beau
-* Envoyer un mail au bout de plusieurs avis laissés
+- Afficher un classement des meilleurs lieux/films basé sur la moyenne des notes des avis.
+- Utiliser des graphiques pour visualiser les notes et les tendances.
+- Améliorer l'esthétique du site avec un design attrayant.
+- Mettre en place des notifications par e-mail pour encourager les utilisateurs à laisser des avis après plusieurs visites.
+
+#

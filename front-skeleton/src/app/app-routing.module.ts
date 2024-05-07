@@ -4,8 +4,6 @@ import { EntityItemComponent } from "components/entity-item/entity-item.componen
 import { EntityListComponent } from "components/entity-list/entity-list.component"
 import { ErrorPageComponent } from "components/error-page/error-page.component"
 import { HomeComponent } from "components/home/home.component"
-import { SigninComponent } from "components/signin/signin.component"
-import { SignupComponent } from "components/signup/signup.component"
 import { AboutComponent } from "pages/about/about.component"
 import { AdminComponent } from "pages/admin/admin.component"
 import { ContactComponent } from "pages/contact/contact.component"
@@ -13,8 +11,6 @@ import { ContactComponent } from "pages/contact/contact.component"
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "home", component: HomeComponent },
-  { path: "signin", component: SigninComponent },
-  { path: "signup", component: SignupComponent },
   { path: "entity/:model", component: EntityListComponent },
   { path: "entity/:model/:id", component: EntityItemComponent },
   { path: "about", component: AboutComponent },
