@@ -11,18 +11,12 @@ import com.pascal.backskeleton.services.FileStorageService;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import com.pascal.backskeleton.DAO.UserRepository;
 
-import jakarta.transaction.Transactional;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import org.springframework.http.MediaType;
-import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -32,7 +26,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    
+
     private FileStorageService fileStorageService;
 
     // Endpoint pour récupérer tous les utilisateurs
@@ -51,9 +45,8 @@ public class UserController {
     }
 
     // Endpoint pour créer un nouvel utilisateur
-    @PostMapping(value = "", consumes = {"application/octet-stream","multipart/form-data"}) 
-    public ResponseEntity<User> createUser(@RequestPart("user") User user,
-            @RequestPart(value = "image", required = false) MultipartFile file) {
+    @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<User> createUser(@RequestPart(name = "user") User user, @RequestPart(name = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         // Si un fichier est fourni, associez-le à l'utilisateur
@@ -74,8 +67,8 @@ public class UserController {
     }
 
     // Endpoint pour mettre à jour un utilisateur existant
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public ResponseEntity<User> updateUser(@RequestPart("id") Long id,@RequestPart("user") User user, @RequestPart(value = "image", required = false) MultipartFile file) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();

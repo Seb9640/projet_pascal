@@ -38,7 +38,7 @@ export class AddEditFormComponent implements OnInit {
   ngOnInit(): void {
     this.showModal();
     console.log([this.model, this.entity, this.entityName]);
-    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType'];
+    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType' ];
     this.inputs = Object.keys(this.model).filter(key => !notAllowed.includes(key));
 
     const defaultValue: any = {};
@@ -124,14 +124,11 @@ export class AddEditFormComponent implements OnInit {
         }
         data.updatedAt = new Date()
 
-        if(hasFile){
-          formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
-        }else{
-          formData = {[removePluralSuffix(this.entityName!)]: data}
-        }
+        formData.append('id', data.id)
+        formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
 
 
-        service.updateEntity(data).subscribe(
+        service.updateEntity(data.id, formData).subscribe(
           (data: any) => {
             console.log(data);
 
@@ -144,11 +141,8 @@ export class AddEditFormComponent implements OnInit {
         data.createdAt = new Date()
 
 
-        if(hasFile){
-          formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
-        }else{
-          formData = {[removePluralSuffix(this.entityName!)]: data}
-        }
+        formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
+
 
         service.addEntity(formData).subscribe(
           (data: any) => {

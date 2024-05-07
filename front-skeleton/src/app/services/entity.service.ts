@@ -26,13 +26,13 @@ export class EntityService<T extends { id?: number }> {
 //
   addEntity(entity: any): Observable<any> {
     const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-    
-    return this.http.post<T>(`${this.apiUrl}`, entity, { headers: headers });
+    headers.set('Accept', 'multipart/form-data');
+    headers.set('Content-Type', 'application/octet-stream');
+    return this.http.post<T>(`${this.apiUrl}`, entity);
   }
 
-  updateEntity(entity: T): Observable<T> {
-    return this.http.put<T>(`${this.apiUrl}/${entity.id}`, entity);
+  updateEntity(id: any, entity: T): Observable<T> {
+    return this.http.put<T>(`${this.apiUrl}/${id}`, entity);
   }
 
   deleteEntity(id: number): Observable<void> {
