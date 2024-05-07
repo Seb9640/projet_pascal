@@ -37,7 +37,7 @@ public class User {
 
     @Lob
     @Column(name = "image")
-    private byte[] image;
+    private String image;
 
     @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
     private Timestamp updatedAt;
@@ -49,7 +49,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, Timestamp birthdate, String username, String password, byte[] image, Timestamp updatedAt, Timestamp createdAt) {
+    public User(Long id, String firstName, String lastName, String email, Timestamp birthdate, String username, String password, String image, Timestamp updatedAt, Timestamp createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -118,11 +118,11 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -177,7 +177,7 @@ public class User {
         return this;
     }
 
-    public User image(byte[] image) {
+    public User image(String image) {
         setImage(image);
         return this;
     }

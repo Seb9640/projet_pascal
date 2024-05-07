@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS places (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     address VARCHAR(255),
-    image_Url VARCHAR(255),
+    image_Url BYTEA,
     opening_hours TEXT,
     updated_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     rating INT NOT NULL,
     summary TEXT,
     review TEXT,
-    image VARCHAR(255),
+    image BYTEA,
     updated_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -25,7 +25,10 @@ export class EntityService<T extends { id?: number }> {
   }
 //
   addEntity(entity: any): Observable<any> {
-    return this.http.post<T>(`${this.apiUrl}`, entity);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    
+    return this.http.post<T>(`${this.apiUrl}`, entity, { headers: headers });
   }
 
   updateEntity(entity: T): Observable<T> {

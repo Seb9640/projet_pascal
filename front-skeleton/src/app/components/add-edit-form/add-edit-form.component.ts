@@ -96,40 +96,21 @@ export class AddEditFormComponent implements OnInit {
     if (this.form?.valid) {
       console.log(this.form.value);
       const data: any = { ...this.form.value, ...this.selectedFiles };
-      const formData = new FormData()
+      let formData: any = new FormData()
+      let hasFile: boolean = false
 
       // Conversion des fichiers en Blob avant de les sauvegarder
       for (const key in data) {
         if (data[key] instanceof File) {
           const file: File = data[key];
-          console.log({ file });
+          hasFile = true
           formData.append(key, file)
           const blob = await fileToBlob(file);
           data[key] = blob;
         }
       }
 
-      let service: any;
-
-
-
-
-
-      if (this.entityName === "review") {
-        data.entity_id = this.model.entity_id
-        data.entity_type = this.model.entity_type
-        service = this.reviewService
-      } else if (this.entityName === "places") {
-        service = this.placeService
-      } else if (this.entityName === "users") {
-        service = this.userService
-      } else if (this.entityName === "movies") {
-        service = this.movieService
-      }
-
-      // console.log(data);
-
-
+      let service: any =  this.getService()
 
       if (this.entity && !(this.entityName === "review")) {
         // update
@@ -142,23 +123,40 @@ export class AddEditFormComponent implements OnInit {
           }
         }
         data.updatedAt = new Date()
-        formData.append('movie', JSON.stringify(data))
+
+        if(hasFile){
+          formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
+        }else{
+          formData = {[removePluralSuffix(this.entityName!)]: data}
+        }
+
+
         service.updateEntity(data).subscribe(
-          (data: any)=>{
+          (data: any) => {
             console.log(data);
 
           }
         )
-        // localDb.updateData(this.entityName!, data);
+
+
       } else {
         // add
         data.createdAt = new Date()
 
-        formData.append('movie', JSON.stringify(data))
-        // localDb.addData(this.entityName!, data);
+
+        if(hasFile){
+          formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
+        }else{
+          formData = {[removePluralSuffix(this.entityName!)]: data}
+        }
+
         service.addEntity(formData).subscribe(
-          (data: any)=>{
+          (data: any) => {
             console.log(data);
+
+          },
+          (error: any) => {
+            console.log({error});
 
           }
         )
@@ -171,5 +169,18 @@ export class AddEditFormComponent implements OnInit {
   onCancel(): void {
     this.closeModal.emit(null);
     this.modal.hide();
+  }
+
+  getService() {
+    if (this.entityName === "review") {
+      return this.reviewService
+    } else if (this.entityName === "places") {
+      return this.placeService
+    } else if (this.entityName === "users") {
+      return this.userService
+    } else if (this.entityName === "movies") {
+      return this.movieService
+    }
+    return null
   }
 }
