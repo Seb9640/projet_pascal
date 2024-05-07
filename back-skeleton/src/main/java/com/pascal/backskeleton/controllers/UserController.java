@@ -22,6 +22,7 @@ import jakarta.transaction.Transactional;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -50,16 +51,16 @@ public class UserController {
     }
 
     // Endpoint pour créer un nouvel utilisateur
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @PostMapping(value = "", consumes = {"application/octet-stream","multipart/form-data"}) 
     public ResponseEntity<User> createUser(@RequestPart("user") User user,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
+            @RequestPart(value = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         // Si un fichier est fourni, associez-le à l'utilisateur
-        if (image != null && !image.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             try {
                 // Sauvegardez le fichier et récupérez son URL
-                String fileUrl = fileStorageService.storeFile(image);
+                String fileUrl = fileStorageService.storeFile(file);
                 // Associez l'URL du fichier à l'utilisateur
                 user.setImage(fileUrl);
             } catch (IOException e) {
