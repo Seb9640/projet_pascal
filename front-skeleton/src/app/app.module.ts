@@ -31,6 +31,7 @@ import { ViewReviewModalComponent } from "components/view-review-modal/view-revi
 import { LoaderComponent } from "components/loader/loader.component"
 import { DisplayEntityComponent } from "components/display-entity/display-entity.component"
 import { ReviewItemComponent } from "components/review-item/review-item.component"
+import { AppNotificationComponent } from "components/app-notification/app-notification.component"
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ReviewItemComponent } from "components/review-item/review-item.componen
     ViewReviewModalComponent,
     LoaderComponent,
     DisplayEntityComponent,
-    ReviewItemComponent
+    ReviewItemComponent,
+    AppNotificationComponent
   ],
   imports: [
     BrowserModule,

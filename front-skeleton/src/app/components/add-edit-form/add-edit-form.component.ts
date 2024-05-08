@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { localDb } from 'db/local';
 import { fileToBlob, removePluralSuffix } from 'helpers/utiles';
 import { MovieService } from 'services/movie.service';
+import { NotificationService } from 'services/notification.service';
 import { PlaceService } from 'services/place.service';
 import { ReviewService } from 'services/review.service';
 import { UserService } from 'services/user.service';
@@ -23,6 +24,8 @@ export class AddEditFormComponent implements OnInit {
   inputs: string[] = []
   selectedFiles: any = {}
   currentValue: string = "2";
+  isSubmitting: boolean = false
+  messageError = ""
 
   form?: FormGroup;
 
@@ -32,6 +35,7 @@ export class AddEditFormComponent implements OnInit {
     private placeService: PlaceService,
     private userService: UserService,
     private reviewService: ReviewService,
+    private notificationService: NotificationService,
   ) {
 
   }
@@ -47,6 +51,9 @@ export class AddEditFormComponent implements OnInit {
         defaultValue[key] = ['']; // Ne pas initialiser avec une valeur par défaut pour le champ de fichier
       } else {
         defaultValue[key] = [this.entity ? this.entity[key] : '', Validators.required];
+      }
+      if (key.toLocaleLowerCase() === 'email') {
+        defaultValue[key].push(Validators.email)
       }
     });
     this.form = this.fb.group(defaultValue);
@@ -93,6 +100,7 @@ export class AddEditFormComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
+    this.isSubmitting = true
     if (this.form?.valid) {
       console.log(this.form.value);
       const data: any = { ...this.form.value, ...this.selectedFiles };
@@ -136,20 +144,26 @@ export class AddEditFormComponent implements OnInit {
       } else {
         // add
         data.createdAt = new Date()
-        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], {type: 'application/json'}))
+        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], { type: 'application/json' }))
 
         service.addEntity(formData).subscribe(
           (data: any) => {
-            console.log(data);
+            this.notificationService.addNotification(`Données ajoutée avec success !`)
           },
           (error: any) => {
-            console.log({ error });
+            this.messageError = error.message
+            setTimeout(() => {
+              this.messageError = ""
+            }, 5000)
           }
         )
+
+
       }
 
       this.closeModal.emit(data);
       this.modal.hide();
+      this.isSubmitting = false
     }
   }
 
@@ -169,5 +183,18 @@ export class AddEditFormComponent implements OnInit {
       return this.movieService
     }
     return null
+  }
+
+  shouldShowError(name: string): boolean {
+    const control = this.form?.get(name);
+    return !!(control && control.errors && (control.dirty || control.touched || this.isSubmitting));
+  }
+
+  isRequiredError(name: string): boolean {
+    return this.form?.get(name)?.errors?.['required'];
+  }
+
+  isEmailError(name: string): boolean {
+    return this.form?.get(name)?.errors?.['email'];
   }
 }

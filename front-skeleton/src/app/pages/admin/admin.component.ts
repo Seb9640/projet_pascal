@@ -38,9 +38,11 @@ export class AdminComponent {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    let total = localStorage.getItem('total')
+
     this.route.queryParams.subscribe(async (params) => {
       this.currentPage = params['page'] ? +params['page'] : 1;
-      this.itemsPerPage = params['total'] ? +params['total'] : 5;
+      this.itemsPerPage = params['total'] ? +params['total'] : total ? parseInt(total) : 5;
     });
     // Obtenir les paramètres de l'URL
     this.route.params.subscribe(async params => {

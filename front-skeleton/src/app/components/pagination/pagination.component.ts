@@ -41,6 +41,7 @@ export class PaginationComponent {
   }
   changeTotalPerPage(event: any): void {
     const total = event.target.value
+    localStorage.setItem('total', total)
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { total: total },

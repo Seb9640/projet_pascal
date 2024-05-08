@@ -8,6 +8,9 @@
       </div>
       <div class="modal-body">
         <form *ngIf="form" [formGroup]="form">
+          <p>
+            {{ messageError }}
+          </p>
           <div class="mb-3" *ngFor="let name of inputs">
             <label [for]="name" class="form-label">{{name | column}}</label>
 
@@ -36,10 +39,9 @@
               [formControlName]="name" cols="30" rows="5"></textarea>
 
             <!-- Affichage des messages de validation -->
-            <div *ngIf="form.get(name)?.errors && (form.get(name)?.dirty || form.get(name)?.touched)"
-              class="text-danger">
-              <div *ngIf="form.get(name)?.errors!['required']">Le champ {{ name }} est requis.</div>
-              <div *ngIf="form.get(name)?.errors!['email']">Le format de l'email est incorrect.</div>
+            <div *ngIf="shouldShowError(name)" class="text-danger">
+              <div *ngIf="isRequiredError(name)">Le champ {{ name }} est requis.</div>
+              <div *ngIf="isEmailError(name)">Le format de l'email est incorrect.</div>
               <!-- Ajoutez d'autres messages de validation selon vos besoins -->
             </div>
           </div>
