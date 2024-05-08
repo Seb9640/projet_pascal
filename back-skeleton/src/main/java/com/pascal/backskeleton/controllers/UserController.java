@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pascal.backskeleton.dao.UserRepository;
+import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.User;
 import com.pascal.backskeleton.services.FileStorageService;
 
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -54,23 +58,13 @@ public class UserController {
     }
 
     // Endpoint pour créer un nouvel utilisateur
-    // @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE,
-    // MediaType.MULTIPART_FORM_DATA_VALUE})
     @PostMapping(consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<User> createUser(HttpServletRequest request, @RequestPart(name = "user") User user,
+    public ResponseEntity<User> createUser(@RequestPart(name = "user") User user,
             @RequestPart(name = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        // Récupérer tous les en-têtes de la requête
-        Enumeration<String> headerNames = request.getHeaderNames();
         
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = request.getHeader(headerName);
-            System.out.println(headerName + ": " + headerValue);
-
-        }
 
         // Si un fichier est fourni, associez-le à l'utilisateur
         if (file != null && !file.isEmpty()) {
@@ -120,11 +114,15 @@ public class UserController {
 
     // Endpoint pour supprimer un utilisateur
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         try {
+            reviewRepository.deleteByUser(id);
+
             userRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

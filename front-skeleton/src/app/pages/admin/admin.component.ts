@@ -57,6 +57,7 @@ export class AdminComponent {
   async getData() {
     // Charger les données de l'entité à partir de la base de données locale
     let service: any
+    
     if (this.entityName === 'movies') {
       service = this.movieService
     } else if (this.entityName === 'places') {

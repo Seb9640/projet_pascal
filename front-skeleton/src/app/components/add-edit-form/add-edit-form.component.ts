@@ -52,9 +52,9 @@ export class AddEditFormComponent implements OnInit {
       } else {
         defaultValue[key] = [this.entity ? this.entity[key] : '', Validators.required];
       }
-      if (key.toLocaleLowerCase() === 'email') {
-        defaultValue[key].push(Validators.email)
-      }
+      // if (key.toLocaleLowerCase() === 'email') {
+      //   defaultValue[key].push(Validators.email)
+      // }
     });
     this.form = this.fb.group(defaultValue);
     console.log({ entityName: this.entityName, entity: this.entity, model: this.model });
@@ -133,7 +133,7 @@ export class AddEditFormComponent implements OnInit {
 
         formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
 
-        service.addEntity(data.id, formData).subscribe(
+        service.updateEntity(data.id, formData).subscribe(
           (data: any) => {
             console.log(data);
           },

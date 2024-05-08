@@ -11,7 +11,7 @@ public class Cors implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // Configurez le chemin de votre API
-            .allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
+            .allowedOrigins("http://localhost:4200", "http://localhost:5000") // Autorisez les requêtes depuis ce domaine
             .allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP
             .allowCredentials(true); // Autorisez les cookies, si nécessaire
     }
