@@ -27,7 +27,7 @@ export class EntityService<T extends { id?: number }> {
   addEntity(entity: any): Observable<any> {
     const headers = new HttpHeaders();
     headers.set('Accept', 'multipart/form-data');
-    headers.set('Content-Type', 'application/octet-stream');
+headers.set('Content-Type', 'multipart/form-data');
     return this.http.post<T>(`${this.apiUrl}`, entity);
   }
 

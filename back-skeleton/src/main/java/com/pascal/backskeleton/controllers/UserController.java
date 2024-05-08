@@ -1,22 +1,28 @@
 package com.pascal.backskeleton.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.pascal.backskeleton.models.User;
-import com.pascal.backskeleton.services.FileStorageService;
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import com.pascal.backskeleton.DAO.UserRepository;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.pascal.backskeleton.DAO.UserRepository;
+import com.pascal.backskeleton.models.User;
+import com.pascal.backskeleton.services.FileStorageService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -45,6 +51,7 @@ public class UserController {
     }
 
     // Endpoint pour créer un nouvel utilisateur
+    // @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<User> createUser(@RequestPart(name = "user") User user, @RequestPart(name = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
