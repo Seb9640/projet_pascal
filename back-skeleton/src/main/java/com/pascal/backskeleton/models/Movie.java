@@ -32,6 +32,17 @@ public class Movie {
     @Column(name = "poster_url")
     private String posterUrl;
 
+    @Column(name = "updated_at", nullable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
+    private Timestamp updatedAt;
+
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 

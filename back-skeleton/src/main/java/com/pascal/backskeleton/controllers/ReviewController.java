@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.pascal.backskeleton.DAO.MovieRepository;
-import com.pascal.backskeleton.DAO.PlaceRepository;
-import com.pascal.backskeleton.DAO.ReviewRepository;
+import com.pascal.backskeleton.dao.MovieRepository;
+import com.pascal.backskeleton.dao.PlaceRepository;
+import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.Movie;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Review;

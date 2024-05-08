@@ -26,9 +26,9 @@ export class EntityService<T extends { id?: number }> {
   //
   addEntity(entity: any): Observable<any> {
     const headers = new HttpHeaders()
-    // headers.set('Content-Type', 'multipart/form-data');
-    headers.set('Content-Type', 'application/json');
-    return this.http.post<T>(`${this.apiUrl}`, entity, {headers:headers});
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post<any>(`${this.apiUrl}`, entity);
   }
 
   updateEntity(id: any, entity: T): Observable<T> {

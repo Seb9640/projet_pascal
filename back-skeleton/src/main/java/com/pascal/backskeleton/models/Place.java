@@ -53,7 +53,7 @@ public class Place {
     @Column(name = "opening_hours")
     private String openingHours;
 
-    @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
+    @Column(name = "updated_at", nullable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
     private Timestamp updatedAt;
 
     

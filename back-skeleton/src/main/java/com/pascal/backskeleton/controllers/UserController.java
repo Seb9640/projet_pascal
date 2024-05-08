@@ -1,7 +1,9 @@
 package com.pascal.backskeleton.controllers;
 
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.sql.Timestamp;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.pascal.backskeleton.DAO.UserRepository;
+import com.pascal.backskeleton.dao.UserRepository;
 import com.pascal.backskeleton.models.User;
 import com.pascal.backskeleton.services.FileStorageService;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,7 +36,6 @@ public class UserController {
 
     @Autowired
     private FileStorageService fileStorageService;
-    
 
     // Endpoint pour récupérer tous les utilisateurs
     @GetMapping
@@ -53,12 +53,24 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-
     // Endpoint pour créer un nouvel utilisateur
-    // @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<User> createUser(@RequestPart(name = "user") User user, @RequestPart(name = "image", required = false) MultipartFile file) {
+    // @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE,
+    // MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<User> createUser(HttpServletRequest request, @RequestPart(name = "user") User user,
+            @RequestPart(name = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        // Récupérer tous les en-têtes de la requête
+        Enumeration<String> headerNames = request.getHeaderNames();
+        
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            System.out.println(headerName + ": " + headerValue);
+
+        }
 
         // Si un fichier est fourni, associez-le à l'utilisateur
         if (file != null && !file.isEmpty()) {
@@ -68,7 +80,7 @@ public class UserController {
 
                 // Associez l'URL du fichier à l'utilisateur
 
-                user.setImage("/static/images/users/" + fileUrl);
+                user.setImage("/assets/images/users/" + fileUrl);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -83,8 +95,10 @@ public class UserController {
     }
 
     // Endpoint pour mettre à jour un utilisateur existant
-    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    public ResponseEntity<User> updateUser(@RequestPart("id") Long id,@RequestPart("user") User user, @RequestPart(value = "image", required = false) MultipartFile file) {
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE,
+            MediaType.APPLICATION_OCTET_STREAM_VALUE })
+    public ResponseEntity<User> updateUser(@RequestPart("id") Long id, @RequestPart("user") User user,
+            @RequestPart(value = "image", required = false) MultipartFile file) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();

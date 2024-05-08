@@ -29,8 +29,10 @@
         </button>
       </div>
       <div class="d-flex justify-content-between">
-        <pagination [totalItems]="entityData.length || 0" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
-          (pageChange)="onPageChange($event)">
+        <pagination
+        [totalItems]="entityData.length || 0"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage" >
 
         </pagination>
 
@@ -95,10 +97,11 @@
         <div class="alert alert-info" *ngIf="!entityData">Aucune donnée à afficher.</div>
       </div>
       <div class="d-flex justify-content-between">
-        <pagination [totalItems]="entityData.length || 0" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
-          (pageChange)="onPageChange($event)">
+        <pagination [totalItems]="entityData.length || 0" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" >
 
         </pagination>
+
+
       </div>
     </div>
   </div>

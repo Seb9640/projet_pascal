@@ -47,7 +47,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">{{ !entity  || (entityName !== "review") ? 'Ajouter ' : 'Modifier'}}</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">{{ !entity?.id  ? 'Ajouter ' : 'Modifier'}}</button>
       </div>
     </div>
   </div>

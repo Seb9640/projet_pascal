@@ -38,7 +38,7 @@ export class AddEditFormComponent implements OnInit {
   ngOnInit(): void {
     this.showModal();
     console.log([this.model, this.entity, this.entityName]);
-    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType' ];
+    const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType'];
     this.inputs = Object.keys(this.model).filter(key => !notAllowed.includes(key));
 
     const defaultValue: any = {};
@@ -99,65 +99,57 @@ export class AddEditFormComponent implements OnInit {
       let formData: any = new FormData()
       let hasFile: boolean = false
 
-      // Conversion des fichiers en Blob avant de les sauvegarder
+
       for (const key in data) {
         if (data[key] instanceof File) {
           const file: File = data[key];
           hasFile = true
           formData.append(key, file)
           delete data[key]
-          // const blob = await fileToBlob(file);
-          // data[key] = blob;
         }
       }
 
-      let service: any =  this.getService()
+      let service: any = this.getService()
 
-      if (this.entity && !(this.entityName === "review")) {
+      if (this.entity && this.entity.id) {
         // update
         data.id = this.entity.id;
         for (const key in data) {
           if (this.inputType(key) === "file") {
-            if (!(data[key] instanceof Blob)) {
+            if (!(data[key] instanceof File)) {
               data[key] = this.entity[key]
             }
           }
         }
         data.updatedAt = new Date()
 
-        formData.append('id', data.id)
         formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
 
-
-        service.updateEntity(data.id, formData).subscribe(
+        service.addEntity(data.id, formData).subscribe(
           (data: any) => {
             console.log(data);
-
-          }
-        )
-
+          },
+          (error: any) => {
+            console.log({ error });
+          })
 
       } else {
         // add
         data.createdAt = new Date()
-
-
-        formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
-
+        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], {type: 'application/json'}))
 
         service.addEntity(formData).subscribe(
           (data: any) => {
             console.log(data);
-
           },
           (error: any) => {
-            console.log({error});
-
+            console.log({ error });
           }
         )
       }
-      // this.closeModal.emit(data);
-      // this.modal.hide();
+
+      this.closeModal.emit(data);
+      this.modal.hide();
     }
   }
 

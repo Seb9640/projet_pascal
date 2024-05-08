@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { blobToUrl } from 'helpers/utiles';
+import { environment } from '../../environments/environment';
 
 @Pipe({
   name: 'getLink',
@@ -12,7 +13,13 @@ export class GetLinkPipe implements PipeTransform {
 
     if(value instanceof Blob){
      return  blobToUrl(value)
-    } else if (typeof value === 'string' && value.startsWith('assets')) {
+    }
+    else if (typeof value === 'string' && value.startsWith('assets')) {
+      value = environment.staticBasePath+value
+      return value;
+    }
+    else if (typeof value === 'string' && value.startsWith('/assets')) {
+      value = environment.staticBasePath+value.substring(1)
       return value;
     }
 

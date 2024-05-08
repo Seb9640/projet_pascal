@@ -15,14 +15,21 @@
                 <tbody>
                   <tr *ngFor="let item of modelEntities">
                     <th scope="row">{{ item | column }}</th>
-                    <ng-container *ngIf="item !== 'createdAt' && item !== 'releaseDate' && item !== 'imageUrl' && item !== 'posterUrl'">
-                      <td>{{ entity[item] }}</td>
-                    </ng-container>
-                    <td *ngIf="item === 'createdAt'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
-                    <td *ngIf="item === 'releaseDate'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
-                    <td *ngIf="item === 'imageUrl' || item === 'posterUrl'">
-                      <img width="300px" [src]="entity[item]" alt="">
+
+                    <td>
+                      <span [innerHTML]="entity[item] | displayValue:item " ></span>
                     </td>
+                    <!--
+                      <ng-container *ngIf="item !== 'createdAt' && item !== 'releaseDate' && item !== 'imageUrl' && item !== 'posterUrl'">
+                        <td>{{ entity[item] }}</td>
+                      </ng-container>
+                      <td *ngIf="item === 'createdAt'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
+
+                      <td *ngIf="item === 'releaseDate'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
+                      <td *ngIf="item === 'imageUrl' || item === 'posterUrl'">
+                        <img width="300px" [src]="entity[item]" alt="">
+                      </td>
+                    -->
                   </tr>
                 </tbody>
               </table>

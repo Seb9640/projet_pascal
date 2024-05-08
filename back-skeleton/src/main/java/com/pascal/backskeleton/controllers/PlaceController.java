@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pascal.backskeleton.DAO.PlaceRepository;
+import com.pascal.backskeleton.dao.PlaceRepository;
 import com.pascal.backskeleton.models.Place;
 
 

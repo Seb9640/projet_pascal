@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { localDb } from 'db/local';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';
@@ -33,10 +33,15 @@ export class AdminComponent {
     private movieService: MovieService,
     private placeService: PlaceService,
     private reviewService: ReviewService,
+    private router: Router,
     private userService: UserService,
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.route.queryParams.subscribe(async (params) => {
+      this.currentPage = params['page'] ? +params['page'] : 1;
+      this.itemsPerPage = params['total'] ? +params['total'] : 5;
+    });
     // Obtenir les paramètres de l'URL
     this.route.params.subscribe(async params => {
       this.isLoading = false
@@ -146,7 +151,7 @@ export class AdminComponent {
   }
 
   onPageChange(page: number): void {
-    this.currentPage = page;
+    this.router.navigate([], { relativeTo: this.route, queryParams: { page: page } });
   }
 
   viewItem(item: any): void {
@@ -184,7 +189,7 @@ export class AdminComponent {
 
   async closeModal() {
     console.log('closeModal');
-    await this.getData()
+    await this.ngOnInit()
 
     this.addData = false
     this.updateData = false

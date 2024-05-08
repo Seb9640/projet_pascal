@@ -1,4 +1,4 @@
-package com.pascal.backskeleton.DAO;
+package com.pascal.backskeleton.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.pascal.backskeleton.DAO.MovieRepository;
+import com.pascal.backskeleton.dao.MovieRepository;
 import com.pascal.backskeleton.models.Movie;
 
 
