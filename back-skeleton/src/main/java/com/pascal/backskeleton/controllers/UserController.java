@@ -24,7 +24,8 @@ import com.pascal.backskeleton.DAO.UserRepository;
 import com.pascal.backskeleton.models.User;
 import com.pascal.backskeleton.services.FileStorageService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -32,14 +33,16 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-
+    @Autowired
     private FileStorageService fileStorageService;
+    
 
     // Endpoint pour récupérer tous les utilisateurs
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
     // Endpoint pour récupérer un utilisateur par son ID
@@ -49,6 +52,7 @@ public class UserController {
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     // Endpoint pour créer un nouvel utilisateur
     // @PostMapping(consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -60,14 +64,19 @@ public class UserController {
         if (file != null && !file.isEmpty()) {
             try {
                 // Sauvegardez le fichier et récupérez son URL
-                String fileUrl = fileStorageService.storeFile(file);
+                String fileUrl = fileStorageService.storeFile(file, "users/");
+
                 // Associez l'URL du fichier à l'utilisateur
-                user.setImage(fileUrl);
+
+                user.setImage("/static/images/users/" + fileUrl);
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
+
+        System.out.println(user);
 
         User savedUser = userRepository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);

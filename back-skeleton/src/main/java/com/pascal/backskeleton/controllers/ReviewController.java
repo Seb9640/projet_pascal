@@ -18,7 +18,6 @@ import com.pascal.backskeleton.models.Review;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {

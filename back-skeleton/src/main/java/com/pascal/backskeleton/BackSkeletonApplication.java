@@ -6,6 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan("com.pascal.backskeleton.controllers")
+@ComponentScan("com.pascal.backskeleton.services")
+@ComponentScan("com.pascal.backskeleton.cors")
 public class BackSkeletonApplication {
     public static void main(String[] args) {
         SpringApplication.run(BackSkeletonApplication.class, args);

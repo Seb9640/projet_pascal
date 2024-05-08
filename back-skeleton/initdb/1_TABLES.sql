@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL,
     birthdate DATE,
     password VARCHAR(100) NOT NULL,
-    image BYTEA,
+    image VARCHAR(255),
     updated_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS places (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     address VARCHAR(255),
-    image_Url BYTEA,
+    image_Url VARCHAR(255),
     opening_hours TEXT,
     updated_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     rating INT NOT NULL,
     summary TEXT,
     review TEXT,
-    image BYTEA,
+    image VARCHAR(255),
     updated_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)

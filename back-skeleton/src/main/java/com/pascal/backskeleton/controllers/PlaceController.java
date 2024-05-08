@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pascal.backskeleton.DAO.PlaceRepository;
 import com.pascal.backskeleton.models.Place;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/places")
 public class PlaceController {

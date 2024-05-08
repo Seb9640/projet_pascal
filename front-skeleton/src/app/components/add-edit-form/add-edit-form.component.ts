@@ -105,8 +105,9 @@ export class AddEditFormComponent implements OnInit {
           const file: File = data[key];
           hasFile = true
           formData.append(key, file)
-          const blob = await fileToBlob(file);
-          data[key] = blob;
+          delete data[key]
+          // const blob = await fileToBlob(file);
+          // data[key] = blob;
         }
       }
 

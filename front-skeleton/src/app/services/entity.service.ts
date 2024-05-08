@@ -23,12 +23,12 @@ export class EntityService<T extends { id?: number }> {
   getEntityById(id: number): Observable<T> {
     return this.http.get<T>(`${this.apiUrl}/${id}`);
   }
-//
+  //
   addEntity(entity: any): Observable<any> {
-    const headers = new HttpHeaders();
-    headers.set('Accept', 'multipart/form-data');
-headers.set('Content-Type', 'multipart/form-data');
-    return this.http.post<T>(`${this.apiUrl}`, entity);
+    const headers = new HttpHeaders()
+    // headers.set('Content-Type', 'multipart/form-data');
+    headers.set('Content-Type', 'application/json');
+    return this.http.post<T>(`${this.apiUrl}`, entity, {headers:headers});
   }
 
   updateEntity(id: any, entity: T): Observable<T> {

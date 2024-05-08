@@ -21,7 +21,6 @@ import com.pascal.backskeleton.DAO.MovieRepository;
 import com.pascal.backskeleton.models.Movie;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
