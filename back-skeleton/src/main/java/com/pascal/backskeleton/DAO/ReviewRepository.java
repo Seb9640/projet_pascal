@@ -12,6 +12,7 @@ import com.pascal.backskeleton.models.User;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByEntityTypeAndEntityId(String entityType, Long entityId);
+    void deleteByEntityIdAndEntityType(Long entityId, String entityType);
 
     void deleteByUser(User user);
 

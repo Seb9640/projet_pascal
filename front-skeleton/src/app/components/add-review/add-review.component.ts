@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importer FormBuilder et FormGroup
+import { AuthService } from 'guard/auth.service';
 import { NotificationService } from 'services/notification.service';
 import { ReviewService } from 'services/review.service';
 
@@ -21,7 +22,8 @@ export class AddReviewComponent {
   constructor(
     private fb: FormBuilder,
      private reviewService: ReviewService,
-     private notificationService: NotificationService
+     private notificationService: NotificationService,
+     private authService: AuthService,
     ){} // Injecter FormBuilder dans le constructeur
 
   ngOnInit(): void {
@@ -67,9 +69,10 @@ export class AddReviewComponent {
           this.notificationService.addNotification("Avis laissé avec succès !")
           this.closeModal.emit({type:'REVIEW', entity:this.entity })
           this.modal.hide()
-        },
-        (error: any)=>{
-          console.log(error);
+
+          this.authService.saveCurrentUser(reviewData.email, reviewData.full_name)
+
+          
           this.notificationService.addNotification("Erreur serveur, merci de réessayer plus tard !")
           this.modal.hide()
         },

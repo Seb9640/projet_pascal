@@ -13,6 +13,19 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  saveCurrentUser(email: string, full_name: string): void {
+    localStorage.setItem('currentUser', JSON.stringify({ email, full_name }));
+  }
+
+  getCurrentUser(): { email: string, full_name: string } | null {
+    const currentUserString = localStorage.getItem('currentUser');
+    if (currentUserString) {
+      return JSON.parse(currentUserString);
+    } else {
+      return null;
+    }
+  }
+
   signIn(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap(response => {

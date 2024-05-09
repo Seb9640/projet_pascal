@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pascal.backskeleton.dao.PlaceRepository;
+import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Place;
@@ -38,6 +39,8 @@ public class PlaceController {
 
     @Autowired
     private PlaceRepository placeRepository;
+     @Autowired
+    private ReviewRepository reviewRepository;
     @Autowired
     private FileStorageService fileStorageService;
 
@@ -138,6 +141,9 @@ public class PlaceController {
 
             if (optionalPlace.isPresent()) {
                 Place place = optionalPlace.get();
+
+                // Supprimer tous les avis associés au film
+                reviewRepository.deleteByEntityIdAndEntityType(id, "place");
 
                 // Supprimer l'image du lieu s'il en a une
                 if (StringUtils.isNotBlank(place.getImageUrl())) {

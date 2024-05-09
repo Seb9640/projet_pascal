@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
     this.reviewService.getAllEntities().subscribe(
       (reviews) => {
         this.popularAllReviews = reviews
+        this.getPagedEntityData()
         this.isLoading = false
       },
       (error) => {
@@ -49,10 +50,10 @@ export class HomeComponent implements OnInit {
 
   }
 
-  get pagedEntityData(): any[] {
+  getPagedEntityData(){
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.popularAllReviews?.slice(startIndex, endIndex) || [];
+    this.popularReviews =  this.popularAllReviews?.slice(startIndex, endIndex) || [];
   }
 
   setFilterValue(value: number){

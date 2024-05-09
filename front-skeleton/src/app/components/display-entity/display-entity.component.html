@@ -15,9 +15,10 @@
       </div>
 
       <div class="d-flex gap-2 py-2">
-          <button class="btn btn-primary w-100" (click)="addReview()" >
+          <button *ngIf="canAddReview" class="btn btn-primary w-100" (click)="addReview()" >
               Noter
           </button>
+        
           <button *ngIf="reviewData?.dataCount" class="btn btn-danger w-100" (click)="displayReview()">
               Avis ({{ reviewData.dataCount }})
           </button>

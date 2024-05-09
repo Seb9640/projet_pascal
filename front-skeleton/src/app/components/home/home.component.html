@@ -17,20 +17,20 @@
 <div class="container py-3">
 
   <!-- Section des avis populaires -->
-  <h2 class="py-2" *ngIf="!isLoading">Avis populaires ({{popularAllReviews.length}})  </h2>
+  <h2 class="py-2" *ngIf="!isLoading">Avis populaires ({{popularReviews.length}})  </h2>
   <loader [isLoading]="isLoading" />
   <div class="row" *ngIf="!isLoading">
 
 
     <div class="col-md-9 order-2">
       <pagination
-      [totalItems]="popularAllReviews.length || 0"
+      [totalItems]="popularReviews.length || 0"
       [itemsPerPage]="itemsPerPage"
       [currentPage]="currentPage" >
 
       </pagination>
-      <div *ngIf="pagedEntityData.length > 0; else noReviews" class="row">
-        <div *ngFor="let review of pagedEntityData" class="review-card col-md-4 mb-3">
+      <div *ngIf="popularReviews.length > 0; else noReviews" class="row">
+        <div *ngFor="let review of popularReviews" class="review-card col-md-4 mb-3">
           <div class="card shadow-lg p-1">
             <h5>
               <span class="badge {{ review.entityType === 'movie' ? 'text-bg-success' : 'text-bg-warning'}}">
@@ -58,7 +58,7 @@
         </div>
       </div>
       <pagination
-      [totalItems]="popularAllReviews.length || 0"
+      [totalItems]="popularReviews.length || 0"
       [itemsPerPage]="itemsPerPage"
       [currentPage]="currentPage" >
 
