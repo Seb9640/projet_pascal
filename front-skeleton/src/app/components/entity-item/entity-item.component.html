@@ -26,9 +26,12 @@
         <div>
           <strong>Année publication :</strong> {{ entity.releaseDate | date:'dd/MM/yyyy' }}
         </div>
-        <a class="btn btn-primary w-100 my-3" (click)="goBack()">
-          Retour
+        <a class="btn btn-warning w-100 my-3" (click)="addReviewModal()">
+          Ajouter un avis
         </a>
+        <div>
+          <strong>Heure d'ouverture :</strong> {{ entity.openingHours }}
+        </div>
 
       </div>
     </div>
@@ -58,17 +61,13 @@
           <strong>Heure d'ouverture :</strong> {{ entity.openingHours }}
         </div>
 
+        <a class="btn btn-warning w-100 my-3" (click)="addReviewModal()">
+          Ajouter un avis
+        </a>
         <a class="btn btn-primary w-100 my-3" (click)="goBack()">
           Retour
         </a>
-        <!-- <div class="d-flex gap-2 py-2">
-                    <button class="btn btn-primary w-100" (click)="addReview(entity)" >
-                        Noter
-                    </button>
-                    <button class="btn btn-danger w-100">
-                        Avis
-                    </button>
-                </div> -->
+
 
       </div>
     </div>
@@ -104,3 +103,5 @@
     Aucun avis disponible.
   </div>
 </div>
+
+<add-review *ngIf="addReview" [entityName]="entityType" [entity]="entity" (closeModal)="closeModal($event)" />

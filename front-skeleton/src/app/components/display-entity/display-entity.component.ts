@@ -27,6 +27,7 @@ export class DisplayEntityComponent {
       this.reviewService.getReviewByEntity(this.type, this.entity.id).subscribe(
         (reviewData) => {
           this.reviewData = reviewData
+
           this.setCanAddReview()
         }
       )

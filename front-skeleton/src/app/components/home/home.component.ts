@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
       let total = localStorage.getItem('total')
       this.currentPage = params['page'] ? +params['page'] : 1;
       this.itemsPerPage = params['total'] ? +params['total'] : total ? parseInt(total) : 6;
+      this.getPagedEntityData()
     });
   }
 

@@ -10,7 +10,7 @@
       </a>
 
       <div class="d-flex justify-content-center">
-        <review-box [note]="reviewData?.avg || 0" [count]="reviewData?.dataCount || 0" />
+        <review-box [note]="reviewData?.avg || 0" [count]="reviewData?.avg || 0" />
 
       </div>
 
@@ -18,7 +18,7 @@
           <button *ngIf="canAddReview" class="btn btn-primary w-100" (click)="addReview()" >
               Noter
           </button>
-        
+
           <button *ngIf="reviewData?.dataCount" class="btn btn-danger w-100" (click)="displayReview()">
               Avis ({{ reviewData.dataCount }})
           </button>

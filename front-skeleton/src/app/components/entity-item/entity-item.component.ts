@@ -17,7 +17,9 @@ export class EntityItemComponent {
   entityName?: string;
   entityId?: string;
   isLoading: boolean = true
+  addReview: boolean = false
   reviewData: any
+  entityType?: string
 
   constructor(
     private route: ActivatedRoute,
@@ -38,14 +40,13 @@ export class EntityItemComponent {
       this.entityName = params['model'] || 'movies';
       this.entityId = params['id'];
       let service: any
-      let entityType: string = ""
 
       if(this.entityName === 'movies'){
         service = this.movieService
-        entityType = 'movie'
+        this.entityType = 'movie'
       }else if(this.entityName === 'places'){
         service = this.placeService
-        entityType = 'place'
+        this.entityType = 'place'
       }
       service.getEntityById(this.entityId).subscribe(
         (entity: Movie) => {
@@ -57,8 +58,8 @@ export class EntityItemComponent {
           console.error(error);
         }
       )
-      if(this.entityId && entityType){
-        this.reviewService.getReviewByEntity(entityType, this.entityId).subscribe(
+      if(this.entityId && this.entityType){
+        this.reviewService.getReviewByEntity(this.entityType, this.entityId).subscribe(
           (reviewData)=>{
             this.reviewData = reviewData
           }
@@ -70,5 +71,12 @@ export class EntityItemComponent {
   }
   goBack(): void {
     window.history.back();
+  }
+
+  addReviewModal(){
+    this.addReview = true
+  }
+  closeModal(data: any){
+    this.addReview = false
   }
 }
