@@ -24,8 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pascal.backskeleton.dao.PlaceRepository;
 import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.Place;
-import com.pascal.backskeleton.models.Place;
-import com.pascal.backskeleton.models.Place;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -43,6 +44,8 @@ public class PlaceController {
     private ReviewRepository reviewRepository;
     @Autowired
     private FileStorageService fileStorageService;
+     @PersistenceContext
+    private EntityManager entityManager;
 
     // Endpoint pour récupérer toutes les places
     @GetMapping
@@ -135,14 +138,15 @@ public class PlaceController {
     }
     // Endpoint pour supprimer une place
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<HttpStatus> deletePlace(@PathVariable("id") Long id) {
         try {
-            Optional<Place> optionalPlace = placeRepository.findById(id);
+            Optional<Place> optionalPlace = Optional.ofNullable(entityManager.find(Place.class, id));
 
             if (optionalPlace.isPresent()) {
                 Place place = optionalPlace.get();
 
-                // Supprimer tous les avis associés au film
+                // Supprimer tous les avis associés au lieu
                 reviewRepository.deleteByEntityIdAndEntityType(id, "place");
 
                 // Supprimer l'image du lieu s'il en a une
@@ -151,7 +155,7 @@ public class PlaceController {
                 }
 
                 // Supprimer le lieu de la base de données
-                placeRepository.deleteById(id);
+                entityManager.remove(place);
 
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {

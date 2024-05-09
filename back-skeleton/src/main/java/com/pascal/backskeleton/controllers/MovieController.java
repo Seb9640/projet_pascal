@@ -23,8 +23,11 @@ import com.pascal.backskeleton.dao.MovieRepository;
 import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.Movie;
 import com.pascal.backskeleton.services.FileStorageService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import io.micrometer.common.util.StringUtils;
 
@@ -40,6 +43,9 @@ public class MovieController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+     @PersistenceContext
+    private EntityManager entityManager;
 
     @GetMapping
     public List<Movie> getAllMovies() {
@@ -132,31 +138,30 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
-        Optional<Movie> optionalMovie = movieRepository.findById(id);
-        
-        if (!optionalMovie.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        
-        Movie existingMovie = optionalMovie.get();
+        try {
+            Optional<Movie> optionalMovie = Optional.ofNullable(entityManager.find(Movie.class, id));
 
-         // Supprimer tous les avis associés au film
-        reviewRepository.deleteByEntityIdAndEntityType(id, "movie");
+            if (!optionalMovie.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        // Vérifier si le film a une image non vide
-        if (StringUtils.isNotBlank(existingMovie.getPosterUrl())) {
-            try {
+            Movie existingMovie = optionalMovie.get();
+
+            // Supprimer tous les avis associés au film
+            reviewRepository.deleteByEntityIdAndEntityType(id, "movie");
+
+            // Vérifier si le film a une image non vide
+            if (StringUtils.isNotBlank(existingMovie.getPosterUrl())) {
                 // Supprimer l'image du film
                 fileStorageService.deleteFile(existingMovie.getPosterUrl());
-            } catch (IOException e) {
-                // Gérer l'exception
-                e.printStackTrace(); // ou autre traitement approprié
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-        }
 
-        movieRepository.delete(existingMovie);
-        return ResponseEntity.noContent().build();
+            entityManager.remove(existingMovie);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
