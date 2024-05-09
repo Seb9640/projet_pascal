@@ -110,7 +110,6 @@ export class EntityListComponent implements OnInit {
     this.filteredEntities = this.entities.filter(entity =>
       entity?.title?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
-    console.log({searchTerm: this.filteredEntities});
   }
 
   async displayReview(entitie: Movie){

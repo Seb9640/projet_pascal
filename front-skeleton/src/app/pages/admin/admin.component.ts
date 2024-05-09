@@ -16,6 +16,7 @@ export class AdminComponent {
   entityName?: string;
   entityId?: string;
   entityData: any[] = [];
+  entityAllData: any[] = [];
   modelEntities: any[] = [];
   tableHeader: string[] = [];
   currentPage: number = 1;
@@ -26,6 +27,7 @@ export class AdminComponent {
   deleteData: boolean = false;
   viewData: boolean = false;
   isLoading: boolean = true;
+  searchTerm: string = '';
   currentData?: any
   // showColumnSelection: boolean = false;
 
@@ -68,8 +70,10 @@ export class AdminComponent {
     service.getAllEntities().subscribe(
       (datas: any[]) => {
 
+        this.entityAllData = datas
         this.entityData = datas
         this.modelEntities = Object.keys(this.entityData[0]);
+        this.getPagedEntityData()
 
         if (this.entityData?.length) {
           // Charger les colonnes sélectionnées à partir du localStorage ou afficher les 2 premières colonnes par défaut
@@ -90,14 +94,9 @@ export class AdminComponent {
       },
       (error: any) => {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
-        
+
       }
     );
-
-
-
-
-
   }
 
   updateTableHeader(): void {
@@ -146,10 +145,10 @@ export class AdminComponent {
   }
 
 
-  get pagedEntityData(): any[] {
+  getPagedEntityData() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.entityData?.slice(startIndex, endIndex) || [];
+    this.entityData = this.entityAllData?.slice(startIndex, endIndex) || [];
   }
 
   onPageChange(page: number): void {
@@ -190,17 +189,17 @@ export class AdminComponent {
   }
 
   async closeModal(data: any) {
-    console.log('closeModal : ',data);
-    if(data){
-      if(data.type === 'DELETE'){
-        this.entityData = this.entityData.filter((entity)=> entity.id !== data.id)
+    console.log('closeModal : ', data);
+    if (data) {
+      if (data.type === 'DELETE') {
+        this.entityData = this.entityData.filter((entity) => entity.id !== data.id)
       }
-      else if(data.type === 'ADD'){
+      else if (data.type === 'ADD') {
         this.entityData.unshift(data.entity)
       }
-      else if(data.type === 'UPDATE'){
-        this.entityData = this.entityData.map((d)=>{
-          if(d.id == data.entity.id){
+      else if (data.type === 'UPDATE') {
+        this.entityData = this.entityData.map((d) => {
+          if (d.id == data.entity.id) {
             return data.entity
           }
           return d
@@ -214,6 +213,18 @@ export class AdminComponent {
     this.deleteData = false
     this.currentData = undefined
     this.viewData = false
+  }
+
+  filterEntities() {
+    this.entityData = this.entityAllData.filter(entity => {
+      if (entity?.title) {
+        return entity?.title?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      }
+      if (entity?.firstName) {
+        return entity?.firstName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          entity?.lastName?.toLowerCase().includes(this.searchTerm.toLowerCase()) 
+      }
+    })
   }
 
 }
