@@ -12,25 +12,27 @@ Le projet "Site d'Avis" permet aux utilisateurs de donner leurs avis sur diverse
 
 L'administration est accessible sur la route `/admin`.
 
-1. **Gestion des Films et Lieux Publics :** Les administrateurs peuvent créer, éditer et supprimer des fiches de films ou de lieux publics. Pour les films, les informations incluent l'affiche, le nom, le réalisateur, le synopsis et la date de sortie. Pour les lieux, les informations incluent le titre, l'adresse et les horaires d'ouverture.
+1. **Gestion des Films, utilisateurs et Lieux Publics :** Les administrateurs peuvent créer, éditer et supprimer des fiches de films ou de lieux publics. Pour les films, les informations incluent l'affiche, le nom, le réalisateur, le synopsis et la date de sortie. Pour les lieux, les informations incluent le titre, l'adresse et les horaires d'ouverture.
 
    - Route de gestion des films : `/admin/movies`
+   ![Capture d'écran](screenshots/7-admin-films.png)
    - Route de gestion des lieux : `/admin/places`
-
-2. **Gestion des Utilisateurs :** Les administrateurs peuvent créer, modifier et supprimer des comptes utilisateur. La suppression d'un utilisateur entraîne également la suppression de tous ses avis.
-
+   ![Capture d'écran](screenshots/8-admin-places.png)
    - Route de gestion des utilisateurs : `/admin/users`
+   ![Capture d'écran](screenshots/9-admin-users.png)
 
 ### Partie Publique
+1.**Page d'accueil :** La page d'accueil affiche la listes avis populaires.
+   ![Capture d'écran](screenshots/1-home.png)
 
-1. **Affichage des Lieux/Films :** Les utilisateurs peuvent consulter la liste des lieux/films disponibles.
+2. **Affichage des Lieux/Films :** Les utilisateurs peuvent consulter la liste des lieux/films disponibles.
 
    - Route : `/entity/:model` (où `:model` peut être `movies` ou `places`)
    ![Capture d'écran](screenshots/2-films.png)
    ![Capture d'écran](screenshots/3-places.png)
 
 
-2. **Avis Utilisateur :** Les utilisateurs peuvent soumettre leurs avis sur un lieu/film, comprenant une note, un résumé et éventuellement un avis détaillé.
+3. **Avis Utilisateur :** Les utilisateurs peuvent soumettre leurs avis sur un lieu/film, comprenant une note, un résumé et éventuellement un avis détaillé.
    ![Capture d'écran](screenshots/6-review.png)
 
 ### Bonus
@@ -54,9 +56,15 @@ Si les fonctionnalités principales sont complètes, voici quelques idées pour 
 3. Pour exécuter le front-end :
    ```
    cd chemin/vers/le/dossier/front-end
+   ng install
    ng serve
    ```
-4. Pour exécuter le back-end :
+4. Pour exécuter la base de données dans docker :
+   ```
+   cd chemin/vers/le/dossier/back-end
+   docker-compose up
+   ```
+5. Pour exécuter le back-end :
    ```
    cd chemin/vers/le/dossier/back-end
    mvn spring-boot:run
