@@ -26,13 +26,12 @@ L'administration est accessible sur la route `/admin`.
 1. **Affichage des Lieux/Films :** Les utilisateurs peuvent consulter la liste des lieux/films disponibles.
 
    - Route : `/entity/:model` (où `:model` peut être `movies` ou `places`)
-   <img src="screenshots/2-films.png.png">
-   <img src="screenshots/3-places.png.png">
+   ![Capture d'écran](screenshots/2-films.png.png)
+   ![Capture d'écran](screenshots/3-places.png.png)
 
 
 2. **Avis Utilisateur :** Les utilisateurs peuvent soumettre leurs avis sur un lieu/film, comprenant une note, un résumé et éventuellement un avis détaillé.
-
-   <img src="screenshots/6-review.png.png">
+   ![Capture d'écran](screenshots/6-review.png.png)
 
 ### Bonus
 
