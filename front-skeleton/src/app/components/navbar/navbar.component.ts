@@ -8,12 +8,8 @@ import { MovieService } from "services/movie.service"
   styleUrls: ["./navbar.component.scss"],
 })
 export class NavbarComponent {
-  links: Link[] = [
-    {
-      name: "Accueil",
-      href: 'home',
-      icon: 'house'
-    },
+  entities: Link[] = [
+
     {
       name: "Films",
       href: 'movies',
@@ -24,11 +20,19 @@ export class NavbarComponent {
       href: 'places',
       icon: 'location-dot'
     },
-    // {
-    //   name: "Avis",
-    //   href: 'review',
-    //   icon: 'comment'
-    // },
+  ]
+  pages: Link[] = [
+    {
+      name: "Accueil",
+      href: '',
+      icon: 'house'
+    },
+    {
+      name: "A props",
+      href: 'about',
+      icon: 'about'
+    },
+
   ]
 
   constructor(private movieService: MovieService) {

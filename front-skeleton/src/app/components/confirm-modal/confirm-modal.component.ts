@@ -42,7 +42,7 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   showModal(): void {
-    this.modal = new (window as any).bootstrap.Modal(document.getElementById('confirmModal'), { backdrop: true });
+    this.modal = new (window as any).bootstrap.Modal(document.getElementById('confirmModal'), { backdrop: 'static'});
     this.modal.show(); // Afficher le modal
   }
 

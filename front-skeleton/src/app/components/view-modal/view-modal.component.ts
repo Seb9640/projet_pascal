@@ -27,7 +27,7 @@ export class ViewModalComponent implements OnInit {
 
 
   showModal(): void {
-    this.modal = new (window as any).bootstrap.Modal(document.getElementById('formModal'), {});
+    this.modal = new (window as any).bootstrap.Modal(document.getElementById('formModal'), {backdrop: 'static'});
     this.modal.show();
   }
 
