@@ -35,7 +35,7 @@ export class ViewReviewModalComponent implements OnInit {
 
 
   showModal(): void {
-    this.modal = new (window as any).bootstrap.Modal(document.getElementById('viewReviewModal'), {});
+    this.modal = new (window as any).bootstrap.Modal(document.getElementById('viewReviewModal'), {backdrop: 'static'});
     this.modal.show();
   }
 

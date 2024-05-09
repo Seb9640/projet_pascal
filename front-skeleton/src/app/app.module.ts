@@ -22,7 +22,6 @@ import { DisplayValuePipe } from "pipes/display-value.pipe"
 import { ConfirmModalComponent } from "components/confirm-modal/confirm-modal.component"
 import { GetLinkPipe } from "pipes/get-link.pipe"
 import { EntityListComponent } from "components/entity-list/entity-list.component"
-import { AddEditReviewComponent } from "components/add-edit-review/add-edit-review.component"
 import { ReviewBoxComponent } from "components/review-box/review-box.component"
 import { ReviewListComponent } from "components/review-list/review-list.component"
 import { ViewModalComponent } from "components/view-modal/view-modal.component"
@@ -32,6 +31,8 @@ import { LoaderComponent } from "components/loader/loader.component"
 import { DisplayEntityComponent } from "components/display-entity/display-entity.component"
 import { ReviewItemComponent } from "components/review-item/review-item.component"
 import { AppNotificationComponent } from "components/app-notification/app-notification.component"
+import { AddReviewComponent } from "components/add-review/add-review.component"
+import { ReviewStatsComponent } from "components/review-stats/review-stats.component"
 
 
 @NgModule({
@@ -47,7 +48,6 @@ import { AppNotificationComponent } from "components/app-notification/app-notifi
     AddEditFormComponent,
     ConfirmModalComponent,
     EntityListComponent,
-    AddEditReviewComponent,
     ReviewBoxComponent,
     ReviewListComponent,
     ViewModalComponent,
@@ -56,7 +56,9 @@ import { AppNotificationComponent } from "components/app-notification/app-notifi
     LoaderComponent,
     DisplayEntityComponent,
     ReviewItemComponent,
-    AppNotificationComponent
+    AppNotificationComponent,
+    AddReviewComponent,
+    ReviewStatsComponent
   ],
   imports: [
     BrowserModule,

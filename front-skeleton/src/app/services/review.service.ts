@@ -15,6 +15,9 @@ export class ReviewService extends EntityService<Review> {
   getReviewByEntity(entityName: string, entityId: string){
     return this.http.get(`${this.apiUrl}/by/entity/${entityName}/${entityId}`);
   }
+  getReviewStatistics(){
+    return this.http.get(`${this.apiUrl}/statistics`);
+  }
 
   // Vous pouvez ajouter des méthodes spécifiques pour les films ici si nécessaire
 }

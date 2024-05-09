@@ -18,7 +18,7 @@ export class ReviewListComponent implements OnInit{
   }
 
   showModal(): void {
-    this.modal = new (window as any).bootstrap.Modal(document.getElementById('reviewModal'), {});
+    this.modal = new (window as any).bootstrap.Modal(document.getElementById('reviewModal'), {backdrop: 'static'});
     this.modal.show(); // Afficher le modal
   }
 

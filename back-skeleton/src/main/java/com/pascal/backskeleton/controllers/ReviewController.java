@@ -1,5 +1,7 @@
 package com.pascal.backskeleton.controllers;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,6 @@ import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.Movie;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Review;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -77,12 +77,36 @@ public class ReviewController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<Integer, Long>> getReviewStatistics() {
+        // Initialisez la carte avec des valeurs par défaut de 0 pour chaque note de 1 à
+        // 5
+        Map<Integer, Long> reviewStatistics = new HashMap<>();
+        for (int i = 1; i <= 5; i++) {
+            reviewStatistics.put(i, 0L);
+        }
+
+        // Exécutez une requête personnalisée pour récupérer les statistiques sur les
+        // avis
+        List<Object[]> statistics = reviewRepository.findReviewStatistics();
+
+        // Parcourez les résultats de la requête et mettez à jour les statistiques dans
+        // la carte
+        for (Object[] row : statistics) {
+            Integer rating = (Integer) row[0];
+            Long count = (Long) row[1];
+            reviewStatistics.put(rating, count);
+        }
+
+        return ResponseEntity.ok(reviewStatistics);
+    }
+
     @GetMapping("/by/entity/{entityType}/{entityId}")
     public ResponseEntity<Map<String, Object>> getReviewsByEntityTypeAndEntityId(@PathVariable String entityType,
             @PathVariable Long entityId) {
         List<Review> reviews = reviewRepository.findByEntityTypeAndEntityId(entityType, entityId);
         Map<String, Object> response = new HashMap<>();
-        
+
         response.put("entityType", entityType);
         response.put("entityId", entityId);
 
@@ -106,8 +130,9 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        Review createdReview = reviewRepository.save(review);
-        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
+        System.out.println(review);
+        // Review createdReview = reviewRepository.save(review);
+        return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment';
 export class GetLinkPipe implements PipeTransform {
 
   transform(value: unknown ): unknown {
-    console.log({value});
 
     if(value instanceof Blob){
      return  blobToUrl(value)

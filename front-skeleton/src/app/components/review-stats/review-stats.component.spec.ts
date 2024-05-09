@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddEditReviewComponent } from './add-edit-review.component';
+import { ReviewStatsComponent } from './review-stats.component';
 
-describe('AddEditReviewComponent', () => {
-  let component: AddEditReviewComponent;
-  let fixture: ComponentFixture<AddEditReviewComponent>;
+describe('ReviewStatsComponent', () => {
+  let component: ReviewStatsComponent;
+  let fixture: ComponentFixture<ReviewStatsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddEditReviewComponent]
+      imports: [ReviewStatsComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AddEditReviewComponent);
+    fixture = TestBed.createComponent(ReviewStatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

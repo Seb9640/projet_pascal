@@ -15,14 +15,7 @@ export class DisplayEntityComponent {
   addEditReview: boolean = false
   viewReview: boolean = false
   reviewData: any
-  reviewModel: Review = {
-    full_name: '',
-    email: '',
-    summary: '',
-    review: '',
-    image: '',
-    rating: 2,
-  }
+
 
   constructor(private reviewService: ReviewService) { }
   ngOnInit(): void {

@@ -10,7 +10,6 @@ export interface Review {
     email: string,
     summary: string | null;
     review: string | null;
-    image: string | null;
     updatedAt?: string| Date | null;
     createdAt?: string| Date;
 }

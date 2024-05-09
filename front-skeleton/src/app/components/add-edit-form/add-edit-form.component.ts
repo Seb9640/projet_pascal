@@ -95,7 +95,7 @@ export class AddEditFormComponent implements OnInit {
     return parseInt(this.currentValue, 10); // Convertit currentValue en nombre avec base 10
   }
   showModal(): void {
-    this.modal = new (window as any).bootstrap.Modal(document.getElementById('formModal'), {});
+    this.modal = new (window as any).bootstrap.Modal(document.getElementById('formModal'), { backdrop: 'static'});
     this.modal.show(); // Afficher le modal
   }
 

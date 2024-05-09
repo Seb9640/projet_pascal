@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true
   currentReviewId?: string
 
+  stats: boolean = false
+
   constructor(private reviewService: ReviewService) { }
 
   ngOnInit(): void {
@@ -70,6 +72,10 @@ export class HomeComponent implements OnInit {
   closeModal(){
     this.readMore = false
     this.currentReviewId = undefined
+  }
+
+  setStats(){
+    this.stats = ! this.stats
   }
 
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core"
 import { Movie } from "models/movie.model"
 import { Router, ActivatedRoute } from '@angular/router';
 import { localDb } from "db/local";
-import { Review } from "models/review.model";
 import { MovieService } from "services/movie.service";
 import { PlaceService } from "services/place.service";
 import { Place } from "models/place.model";
