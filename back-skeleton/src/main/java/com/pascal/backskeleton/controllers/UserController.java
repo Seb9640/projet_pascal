@@ -26,9 +26,12 @@ import com.pascal.backskeleton.dao.UserRepository;
 import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.User;
 import com.pascal.backskeleton.services.FileStorageService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @RestController
@@ -43,6 +46,9 @@ public class UserController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // Endpoint pour récupérer tous les utilisateurs
     @GetMapping
@@ -147,7 +153,7 @@ public class UserController {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         try {
             // Chercher l'utilisateur par son ID
-            User user = userRepository.findById(id).orElse(null);
+            User user = entityManager.find(User.class, id);
 
             // Vérifier si l'utilisateur existe
             if (user == null) {
@@ -163,7 +169,7 @@ public class UserController {
             reviewRepository.deleteByUser(user);
 
             // Supprimer l'utilisateur
-            userRepository.deleteById(id);
+            entityManager.remove(user);
 
             // Réponse en cas de succès
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
