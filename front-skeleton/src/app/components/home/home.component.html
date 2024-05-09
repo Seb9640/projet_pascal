@@ -1,6 +1,6 @@
 <div class="banner">
   <div class="container">
-    <div class="jumbotron py-3">
+    <div class="jumbotron py-5">
       <h1 class="display-4">Bienvenue sur notre site d'avis en ligne !</h1>
       <p class="lead">Découvrez les avis sur les films, les restaurants, les produits et bien plus encore.</p>
       <hr class="my-4">
@@ -17,12 +17,20 @@
 <div class="container py-3">
 
   <!-- Section des avis populaires -->
-  <h2 class="py-2" *ngIf="!isLoading">Avis populaires ({{popularReviews.length}})  </h2>
+  <h2 class="py-2" *ngIf="!isLoading">Avis populaires ({{popularAllReviews.length}})  </h2>
   <loader [isLoading]="isLoading" />
   <div class="row" *ngIf="!isLoading">
+
+
     <div class="col-md-9 order-2">
-      <div *ngIf="popularReviews.length > 0; else noReviews" class="row">
-        <div *ngFor="let review of popularReviews" class="review-card col-md-4 mb-3">
+      <pagination
+      [totalItems]="popularAllReviews.length || 0"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage" >
+
+      </pagination>
+      <div *ngIf="pagedEntityData.length > 0; else noReviews" class="row">
+        <div *ngFor="let review of pagedEntityData" class="review-card col-md-4 mb-3">
           <div class="card shadow-lg p-1">
             <h5>
               <span class="badge {{ review.entityType === 'movie' ? 'text-bg-success' : 'text-bg-warning'}}">
@@ -39,7 +47,7 @@
             <div>
               <span class="badge text-bg-success">
                 Publié le :
-                {{ review.updatedAt | date:'dd/MM/Y H:MM:ss' }}
+                {{ review.createdAt | date:'dd/MM/Y H:MM:ss' }}
               </span>
             </div>
 
@@ -53,6 +61,8 @@
         <p>Aucun avis disponible pour le moment.</p>
       </ng-template>
     </div>
+
+
     <div class="col-md-3 order-1">
       <div class="card p-2">
         <h2>Fitrer par note</h2>

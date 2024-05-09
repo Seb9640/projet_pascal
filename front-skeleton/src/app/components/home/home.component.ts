@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core"
+import { ActivatedRoute, Router } from "@angular/router";
 import { ReviewService } from "services/review.service";
 
 
@@ -13,14 +14,25 @@ export class HomeComponent implements OnInit {
   readMore: boolean = false
   isLoading: boolean = true
   currentReviewId?: string
+  currentPage: number = 1
+  itemsPerPage: number = 6
 
   stats: boolean = false
 
-  constructor(private reviewService: ReviewService) { }
+  constructor(
+    private reviewService: ReviewService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     window.scrollTo(0,0)
     this.loadPopularReviews();
+    this.route.queryParams.subscribe(async (params) => {
+      let total = localStorage.getItem('total')
+      this.currentPage = params['page'] ? +params['page'] : 1;
+      this.itemsPerPage = params['total'] ? +params['total'] : total ? parseInt(total) : 6;
+    });
   }
 
   async loadPopularReviews() {
@@ -28,22 +40,19 @@ export class HomeComponent implements OnInit {
       (reviews) => {
         this.popularAllReviews = reviews
         this.isLoading = false
-        // this.popularAllReviews.map(async (review) => {
-        //   if(review.entity_type === 'movie'){
-        //     review.entity =  await localDb.getData('movies', review.entity_id)
-        //   }
-        //   return review
-        // });
-        this.popularReviews = this.popularAllReviews
-
       },
       (error) => {
         this.isLoading = false
         console.error(error);
       }
     );
-    // this.popularAllReviews =  await localDb.getAllData('review')
 
+  }
+
+  get pagedEntityData(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.popularAllReviews?.slice(startIndex, endIndex) || [];
   }
 
   setFilterValue(value: number){

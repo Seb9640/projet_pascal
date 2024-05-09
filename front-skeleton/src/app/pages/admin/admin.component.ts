@@ -32,7 +32,6 @@ export class AdminComponent {
   constructor(private route: ActivatedRoute,
     private movieService: MovieService,
     private placeService: PlaceService,
-    private reviewService: ReviewService,
     private router: Router,
     private userService: UserService,
   ) { }
@@ -91,7 +90,7 @@ export class AdminComponent {
       },
       (error: any) => {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
-        // Vous pouvez ajouter d'autres logiques de gestion d'erreur ici, par exemple, afficher un message d'erreur à l'utilisateur.
+        
       }
     );
 
