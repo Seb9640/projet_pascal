@@ -19,6 +19,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r.rating, COUNT(r) FROM Review r GROUP BY r.rating")
     List<Object[]> findReviewStatistics();
 
+    long countByUser(User user);
+
 
 
 }

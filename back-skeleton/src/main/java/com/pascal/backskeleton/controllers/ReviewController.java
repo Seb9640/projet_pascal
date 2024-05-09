@@ -20,6 +20,7 @@ import com.pascal.backskeleton.models.Movie;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Review;
 import com.pascal.backskeleton.models.User;
+import com.pascal.backskeleton.services.EmailService;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -35,11 +36,12 @@ public class ReviewController {
 
     @Autowired
     private PlaceRepository placeRepository;
-
     @Autowired
-    public ReviewController(ReviewRepository reviewRepository) {
-        this.reviewRepository = reviewRepository;
-    }
+
+    private EmailService emailService;
+
+  
+    
 
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
@@ -134,44 +136,40 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<Review> createReview(@RequestBody Map<String, Object> requestBody) {
         if (requestBody != null && requestBody.containsKey("review")) {
-            ObjectMapper objectMapper = new ObjectMapper(); // Créez un objet ObjectMapper pour la conversion
-            System.out.println(requestBody.get("review"));
+            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> reviewMap = (Map<String, Object>) requestBody.get("review");
             try {
-                // Convertissez l'objet JSON de l'avis en un objet de type Review en utilisant
-                // ObjectMapper
                 Review reviewObject = objectMapper.convertValue(reviewMap, Review.class);
-                // Maintenant, vous avez un objet Review que vous pouvez utiliser
-                System.out.println(reviewObject);
-                String email = (String) reviewMap.get("email"); // Cast de l'email en String
-                String fullName = (String) reviewMap.get("full_name"); // Récupération du nom complet
-                String[] nameParts = fullName.split(" "); // Découpe du nom complet en prénom et nom de famille
-                String firstName = nameParts[0]; // Premier élément du tableau est le prénom
-                String lastName = nameParts.length > 1 ? nameParts[1] : ""; // Deuxième élément du tableau est le nom de
-                                                                            // famille, s'il existe
+                String email = (String) reviewMap.get("email");
+                String fullName = (String) reviewMap.get("full_name");
+                String[] nameParts = fullName.split(" ");
+                String firstName = nameParts[0];
+                String lastName = nameParts.length > 1 ? nameParts[1] : "";
 
-                // Récupérer l'utilisateur s'il existe ou créer un nouvel utilisateur
-                User user = userRepository.findByEmail(email)
-                        .orElseGet(() -> {
-                            User newUser = new User();
-                            newUser.setEmail(email);
-                            newUser.setFirstName(firstName);
-                            newUser.setLastName(lastName);
-                            newUser.setUsername(lastName);
-                            newUser.setPassword("lastName");
-                            return userRepository.save(newUser);
-                        });
+                User user = userRepository.findByEmail(email).orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setFirstName(firstName);
+                    newUser.setLastName(lastName);
+                    newUser.setUsername(lastName);
+                    newUser.setPassword("lastName");
+                    return userRepository.save(newUser);
+                });
 
                 reviewObject.setUser(user);
                 Review createdReview = reviewRepository.save(reviewObject);
+
+                // Envoi d'un e-mail de remerciement si l'utilisateur a rédigé au moins 5 avis
+                if (reviewRepository.countByUser(user) >= 5) {
+                    emailService.sendThankYouEmail(user);
+                }
+
                 return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
             } catch (IllegalArgumentException e) {
-                // La conversion a échoué
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            // L'objet requestBody est null ou ne contient pas la clé "review"
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
