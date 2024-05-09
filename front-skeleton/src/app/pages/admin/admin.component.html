@@ -112,18 +112,18 @@
   [entityName]="entityName"
   [model]="entityData[0]"
   [entity]="currentData"
-  (closeModal)="closeModal()"
+  (closeModal)="closeModal($event)"
 />
 <confirm-modal
 *ngIf="deleteData && currentData"
 [entityName]="entityName"
 [model]="entityData[0]"
 [entity]="currentData"
-(closeModal)="closeModal()"
+(closeModal)="closeModal($event)"
 />
 
 <view-modal
 *ngIf="viewData"
 [entity]="currentData"
-(closeModal)="closeModal()"
+(closeModal)="closeModal($event)"
 />

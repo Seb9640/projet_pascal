@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.pascal.backskeleton.models.Review;
+import com.pascal.backskeleton.models.User;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByEntityTypeAndEntityId(String entityType, Long entityId);
-    void deleteByUser(Long user);
+    void deleteByUser(User user);
 }

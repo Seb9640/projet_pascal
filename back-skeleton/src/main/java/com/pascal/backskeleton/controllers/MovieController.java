@@ -1,8 +1,12 @@
 package com.pascal.backskeleton.controllers;
+
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,59 +18,142 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pascal.backskeleton.dao.MovieRepository;
 import com.pascal.backskeleton.models.Movie;
+import com.pascal.backskeleton.services.FileStorageService;
+import com.pascal.backskeleton.models.User;
 
+import java.util.stream.Collectors;
+
+import io.micrometer.common.util.StringUtils;
 
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
-    
+
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @GetMapping
     public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
-    }
+        // Récupérer tous les films
+        List<Movie> movies = movieRepository.findAll();
 
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Movie createMovie(@RequestParam("posterUrl") MultipartFile file, @RequestBody Movie movie) {
-        return movieRepository.save(movie);
+        // Trier les films par ordre décroissant des ID
+        List<Movie> sortedMovies = movies.stream()
+                .sorted((m1, m2) -> Long.compare(m2.getId(), m1.getId())) // Tri décroissant des ID
+                .collect(Collectors.toList());
+
+        // Retourner les films triés
+        return sortedMovies;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         return movie.map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movieDetails) {
-        Optional<Movie> optionalMovie = movieRepository.findById(id);
-        if (!optionalMovie.isPresent()) {
-            return ResponseEntity.notFound().build();
+    @PostMapping(consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<Movie> createMovie(@RequestPart(name = "movie") Movie movie,
+            @RequestPart(name = "posterUrl", required = false) MultipartFile file) {
+        movie.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        movie.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        // Si un fichier est fourni, associez-le à l'utilisateur
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Sauvegardez le fichier et récupérez son URL
+                String fileUrl = fileStorageService.storeFile(file, "movies/");
+
+                // Associez l'URL du fichier à l'utilisateur
+
+                movie.setPosterUrl("/assets/images/movies/" + fileUrl);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
         }
-        Movie movie = optionalMovie.get();
-        movie.setTitle(movieDetails.getTitle());
-        movie.setDirector(movieDetails.getDirector());
-        movie.setReleaseDate(movieDetails.getReleaseDate());
-        movie.setSynopsis(movieDetails.getSynopsis());
-        movie.setPosterUrl(movieDetails.getPosterUrl());
-        return ResponseEntity.ok(movieRepository.save(movie));
+
+        System.out.println(movie);
+
+        Movie savedMovie = movieRepository.save(movie);
+        return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE })
+    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestPart("movie") Movie newMovie,
+            @RequestPart(value = "posterUrl", required = false) MultipartFile file) {
+
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+
+        if (optionalMovie.isPresent()) {
+            Movie existingMovie = optionalMovie.get();
+            existingMovie.setTitle(newMovie.getTitle());
+            existingMovie.setDirector(newMovie.getDirector());
+            existingMovie.setReleaseDate(newMovie.getReleaseDate());
+            existingMovie.setSynopsis(newMovie.getSynopsis());
+            existingMovie.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+            try {
+                String fileUrl = null;
+
+                if (file != null && !file.isEmpty()) {
+                    // Sauvegarder le fichier et récupérer son URL
+                    if (StringUtils.isNotBlank(existingMovie.getPosterUrl())) {
+                        fileUrl = fileStorageService.updateFile(existingMovie.getPosterUrl(), file, "movies/");
+                    } else {
+                        fileUrl = fileStorageService.storeFile(file, "movies/");
+                    }
+
+                    // Associer l'URL du fichier à l'utilisateur
+                    existingMovie.setPosterUrl("/assets/images/movies/" + fileUrl);
+                }
+
+                // Enregistrer l'utilisateur mis à jour dans la base de données
+                Movie updatedMovie = movieRepository.save(existingMovie);
+                return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (!movie.isPresent()) {
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        
+        if (!optionalMovie.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        movieRepository.delete(movie.get());
+        
+        Movie existingMovie = optionalMovie.get();
+
+        // Vérifier si le film a une image non vide
+        if (StringUtils.isNotBlank(existingMovie.getPosterUrl())) {
+            try {
+                // Supprimer l'image du film
+                fileStorageService.deleteFile(existingMovie.getPosterUrl());
+            } catch (IOException e) {
+                // Gérer l'exception
+                e.printStackTrace(); // ou autre traitement approprié
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+
+        movieRepository.delete(existingMovie);
         return ResponseEntity.noContent().build();
     }
 }

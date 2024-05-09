@@ -5,8 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class NotificationService {
-  private notificationsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  notifications$: Observable<any[]> = this.notificationsSubject.asObservable();
+  notificationsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   constructor() { }
 
@@ -14,11 +13,7 @@ export class NotificationService {
     const newNotification = { message };
     const updatedNotifications = [...this.notificationsSubject.getValue(), newNotification];
     this.notificationsSubject.next(updatedNotifications);
-    setTimeout(() => this.removeNotification(newNotification), 5000); // Supprime automatiquement la notification après 5 secondes
+    setTimeout(() => this.notificationsSubject.next([]), 2000); // Supprime automatiquement la notification après 5 secondes
   }
 
-  removeNotification(notification: any) {
-    const updatedNotifications = this.notificationsSubject.getValue().filter(n => n !== notification);
-    this.notificationsSubject.next(updatedNotifications);
-  }
 }

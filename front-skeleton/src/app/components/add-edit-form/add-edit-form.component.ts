@@ -130,12 +130,16 @@ export class AddEditFormComponent implements OnInit {
           }
         }
         data.updatedAt = new Date()
-
-        formData.append(removePluralSuffix(this.entityName!), JSON.stringify(data))
+        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], { type: 'application/json' }))
 
         service.updateEntity(data.id, formData).subscribe(
           (data: any) => {
-            console.log(data);
+            // console.log(data);
+            this.notificationService.addNotification(`Données modifiée avec success !`)
+            this.closeModal.emit({
+              type: "UPDATE",
+              entity: data
+            });
           },
           (error: any) => {
             console.log({ error });
@@ -149,6 +153,11 @@ export class AddEditFormComponent implements OnInit {
         service.addEntity(formData).subscribe(
           (data: any) => {
             this.notificationService.addNotification(`Données ajoutée avec success !`)
+
+            this.closeModal.emit({
+              type: "ADD",
+              entity: data
+            });
           },
           (error: any) => {
             this.messageError = error.message
@@ -161,7 +170,8 @@ export class AddEditFormComponent implements OnInit {
 
       }
 
-      this.closeModal.emit(data);
+
+
       this.modal.hide();
       this.isSubmitting = false
     }

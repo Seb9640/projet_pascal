@@ -41,6 +41,7 @@ public class FileStorageService {
     }
 
     public void deleteFile(String fileName) throws IOException {
+        fileName = fileName.split("/images/")[1];
         Path filePath = Paths.get(uploadDir + "/" + fileName);
         Files.deleteIfExists(filePath);
     }

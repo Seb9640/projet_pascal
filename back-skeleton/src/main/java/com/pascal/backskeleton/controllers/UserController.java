@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,10 @@ import com.pascal.backskeleton.dao.UserRepository;
 import com.pascal.backskeleton.dao.ReviewRepository;
 import com.pascal.backskeleton.models.User;
 import com.pascal.backskeleton.services.FileStorageService;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,9 +47,16 @@ public class UserController {
     // Endpoint pour récupérer tous les utilisateurs
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
+        // Récupérer tous les utilisateurs
         List<User> users = userRepository.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
 
+        // Trier les utilisateurs par ordre décroissant des ID
+        List<User> sortedUsers = users.stream()
+                .sorted((u1, u2) -> Long.compare(u2.getId(), u1.getId())) // Tri décroissant des ID
+                .collect(Collectors.toList());
+
+        // Retourner les utilisateurs triés
+        return new ResponseEntity<>(sortedUsers, HttpStatus.OK);
     }
 
     // Endpoint pour récupérer un utilisateur par son ID
@@ -63,8 +73,6 @@ public class UserController {
             @RequestPart(name = "image", required = false) MultipartFile file) {
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-
-        
 
         // Si un fichier est fourni, associez-le à l'utilisateur
         if (file != null && !file.isEmpty()) {
@@ -91,22 +99,43 @@ public class UserController {
     // Endpoint pour mettre à jour un utilisateur existant
     @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE,
             MediaType.APPLICATION_OCTET_STREAM_VALUE })
-    public ResponseEntity<User> updateUser(@RequestPart("id") Long id, @RequestPart("user") User user,
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestPart("user") User newUser,
             @RequestPart(value = "image", required = false) MultipartFile file) {
+
         Optional<User> optionalUser = userRepository.findById(id);
+
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setLastName(user.getLastName());
-            existingUser.setBirthdate(user.getBirthdate());
-            existingUser.setUsername(user.getUsername());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(user.getPassword());
-            existingUser.setImage(user.getImage());
-            existingUser.setUpdatedAt(user.getUpdatedAt());
+            existingUser.setFirstName(newUser.getFirstName());
+            existingUser.setLastName(newUser.getLastName());
+            existingUser.setBirthdate(newUser.getBirthdate());
+            existingUser.setUsername(newUser.getUsername());
+            existingUser.setEmail(newUser.getEmail());
+            existingUser.setPassword(newUser.getPassword());
+            existingUser.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-            User updatedUser = userRepository.save(existingUser);
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            try {
+                String fileUrl = null;
+
+                if (file != null && !file.isEmpty()) {
+                    // Sauvegarder le fichier et récupérer son URL
+                    if (StringUtils.isNotBlank(existingUser.getImage())) {
+                        fileUrl = fileStorageService.updateFile(existingUser.getImage(), file, "users/");
+                    } else {
+                        fileUrl = fileStorageService.storeFile(file, "users/");
+                    }
+
+                    // Associer l'URL du fichier à l'utilisateur
+                    existingUser.setImage("/assets/images/users/" + fileUrl);
+                }
+
+                // Enregistrer l'utilisateur mis à jour dans la base de données
+                User updatedUser = userRepository.save(existingUser);
+                return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -117,12 +146,31 @@ public class UserController {
     @Transactional
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         try {
-            reviewRepository.deleteByUser(id);
+            // Chercher l'utilisateur par son ID
+            User user = userRepository.findById(id).orElse(null);
 
+            // Vérifier si l'utilisateur existe
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            // Vérifier si l'utilisateur a une image non vide
+            if (StringUtils.isNotBlank(user.getImage())) {
+                // Supprimer l'image de l'utilisateur
+                fileStorageService.deleteFile(user.getImage());
+            }
+            // Supprimer les avis associés à cet utilisateur
+            reviewRepository.deleteByUser(user);
+
+            // Supprimer l'utilisateur
             userRepository.deleteById(id);
+
+            // Réponse en cas de succès
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            System.out.println(e);
+            // En cas d'erreur, imprimer l'exception et renvoyer une réponse avec une erreur
+            // de serveur interne
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

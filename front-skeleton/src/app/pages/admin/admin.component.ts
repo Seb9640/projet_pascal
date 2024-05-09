@@ -57,7 +57,7 @@ export class AdminComponent {
   async getData() {
     // Charger les données de l'entité à partir de la base de données locale
     let service: any
-    
+
     if (this.entityName === 'movies') {
       service = this.movieService
     } else if (this.entityName === 'places') {
@@ -190,9 +190,25 @@ export class AdminComponent {
     console.log("Suppression de l'élément : ", item);
   }
 
-  async closeModal() {
-    console.log('closeModal');
-    await this.ngOnInit()
+  async closeModal(data: any) {
+    console.log('closeModal : ',data);
+    if(data){
+      if(data.type === 'DELETE'){
+        this.entityData = this.entityData.filter((entity)=> entity.id !== data.id)
+      }
+      else if(data.type === 'ADD'){
+        this.entityData.unshift(data.entity)
+      }
+      else if(data.type === 'UPDATE'){
+        this.entityData = this.entityData.map((d)=>{
+          if(d.id == data.entity.id){
+            return data.entity
+          }
+          return d
+        })
+      }
+    }
+
 
     this.addData = false
     this.updateData = false

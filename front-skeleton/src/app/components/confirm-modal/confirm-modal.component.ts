@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { localDb } from 'db/local';
 import { MovieService } from 'services/movie.service';
+import { NotificationService } from 'services/notification.service';
 import { PlaceService } from 'services/place.service';
 import { ReviewService } from 'services/review.service';
 import { UserService } from 'services/user.service';
@@ -25,6 +26,7 @@ export class ConfirmModalComponent implements OnInit {
     private placeService: PlaceService,
     private userService: UserService,
     private reviewService: ReviewService,
+    private notificationService: NotificationService,
   ) {
 
   }
@@ -33,7 +35,7 @@ export class ConfirmModalComponent implements OnInit {
     this.showModal()
     console.log(this.entity);
     if (this.entityName === "users") {
-      this.name = this.entity.first_name + " " + this.entity.last_name
+      this.name = this.entity.firstName + " " + this.entity.lastName
     } else {
       this.name = this.entity?.title || this.entity?.name
     }
@@ -66,7 +68,12 @@ export class ConfirmModalComponent implements OnInit {
       }
     )
     this.modal.hide();
-    this.closeModal.emit(null)
+
+    this.notificationService.addNotification(`Données supprimée avec success !`)
+    this.closeModal.emit({
+      type: 'DELETE',
+      id: this.entity.id
+    })
   }
 
   cancelDeletion() {

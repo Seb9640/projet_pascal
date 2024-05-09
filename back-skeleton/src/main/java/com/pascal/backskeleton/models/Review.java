@@ -37,7 +37,7 @@ public class Review {
     private String entityType;
 
     
-    @Column(name = "image", nullable = false)
+    @Column(name = "image", nullable = true)
     private String image;
 
     @Column(name = "rating", nullable = false)

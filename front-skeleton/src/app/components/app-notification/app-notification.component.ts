@@ -4,21 +4,23 @@ import { NotificationService } from 'services/notification.service';
 @Component({
   selector: 'app-notification',
   templateUrl: './app-notification.component.html',
-  styleUrl: './app-notification.component.scss'
+  styleUrls: ['./app-notification.component.scss']
 })
 export class AppNotificationComponent {
   notifications: any[] = [];
+  audio: HTMLAudioElement = new Audio('/assets/audios/success.mp3');
 
   constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     // S'abonner aux notifications
-    this.notificationService.notifications$.subscribe((notification: any[]) => {
-      this.notifications.push(notification);
-      // Supprimer automatiquement la notification après quelques secondes
-      setTimeout(() => {
-        this.removeNotification(notification);
-      }, 5000); // Supprimer après 5 secondes
+    this.notificationService.notificationsSubject.subscribe((notification: any[]) => {
+      if(notification.length){
+        this.notifications.push(...notification);
+        // Jouer l'effet sonore
+        this.playNotificationSound();
+        setTimeout(() => this.notifications = [], 2000);
+      }
     });
   }
 
@@ -26,6 +28,18 @@ export class AppNotificationComponent {
     const index = this.notifications.indexOf(notification);
     if (index !== -1) {
       this.notifications.splice(index, 1);
+    }
+  }
+
+  playNotificationSound(): void {
+    // Vérifier si l'audio est chargé avant de le jouer pour éviter les erreurs
+    if (this.audio.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      this.audio.play();
+    } else {
+      // Si l'audio n'est pas chargé, attendre qu'il le soit avant de le jouer
+      this.audio.addEventListener('canplaythrough', () => {
+        this.audio.play();
+      });
     }
   }
 }
