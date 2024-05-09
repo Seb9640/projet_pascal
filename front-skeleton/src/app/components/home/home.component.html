@@ -57,6 +57,12 @@
           </div>
         </div>
       </div>
+      <pagination
+      [totalItems]="popularAllReviews.length || 0"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage" >
+
+      </pagination>
       <ng-template #noReviews>
         <p>Aucun avis disponible pour le moment.</p>
       </ng-template>
