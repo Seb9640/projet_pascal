@@ -42,7 +42,7 @@ export class DisplayEntityComponent {
 
   }
 
-  closeModal() {
+  closeModal(data?: any) {
     this.addEditReview = false
     this.viewReview = false
   }

@@ -11,12 +11,15 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pascal.backskeleton.dao.MovieRepository;
 import com.pascal.backskeleton.dao.PlaceRepository;
 import com.pascal.backskeleton.dao.ReviewRepository;
+import com.pascal.backskeleton.dao.UserRepository;
 import com.pascal.backskeleton.models.Movie;
 import com.pascal.backskeleton.models.Place;
 import com.pascal.backskeleton.models.Review;
+import com.pascal.backskeleton.models.User;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -24,6 +27,8 @@ public class ReviewController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private MovieRepository movieRepository;
@@ -39,14 +44,13 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
-
+    
         // Filtrer les avis en fonction de la valeur de entityType
         List<Review> filteredReviews = reviews.stream()
                 .filter(review -> {
                     Long entityId = review.getEntityId();
                     if ("movie".equals(review.getEntityType())) {
-                        // Si l'entité est un film, utilisez entity_id pour récupérer les détails du
-                        // film
+                        // Si l'entité est un film, utilisez entity_id pour récupérer les détails du film
                         Movie movie = movieRepository.findById(entityId).orElse(null);
                         // Vérifiez si le film existe avant de filtrer l'avis
                         if (movie != null) {
@@ -54,8 +58,7 @@ public class ReviewController {
                             return true;
                         }
                     } else if ("place".equals(review.getEntityType())) {
-                        // Si l'entité est un lieu, utilisez entity_id pour récupérer les détails du
-                        // lieu
+                        // Si l'entité est un lieu, utilisez entity_id pour récupérer les détails du lieu
                         Place place = placeRepository.findById(entityId).orElse(null);
                         // Vérifiez si le lieu existe avant de filtrer l'avis
                         if (place != null) {
@@ -65,11 +68,11 @@ public class ReviewController {
                     }
                     return false;
                 })
+                .sorted(Comparator.comparing(Review::getId).reversed()) // Tri par ID décroissant
                 .collect(Collectors.toList());
-
-        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    
+        return new ResponseEntity<>(filteredReviews, HttpStatus.OK);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
         Optional<Review> optionalReview = reviewRepository.findById(id);
@@ -129,10 +132,48 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        System.out.println(review);
-        // Review createdReview = reviewRepository.save(review);
-        return new ResponseEntity<>(review, HttpStatus.CREATED);
+    public ResponseEntity<Review> createReview(@RequestBody Map<String, Object> requestBody) {
+        if (requestBody != null && requestBody.containsKey("review")) {
+            ObjectMapper objectMapper = new ObjectMapper(); // Créez un objet ObjectMapper pour la conversion
+            System.out.println(requestBody.get("review"));
+            Map<String, Object> reviewMap = (Map<String, Object>) requestBody.get("review");
+            try {
+                // Convertissez l'objet JSON de l'avis en un objet de type Review en utilisant
+                // ObjectMapper
+                Review reviewObject = objectMapper.convertValue(reviewMap, Review.class);
+                // Maintenant, vous avez un objet Review que vous pouvez utiliser
+                System.out.println(reviewObject);
+                String email = (String) reviewMap.get("email"); // Cast de l'email en String
+                String fullName = (String) reviewMap.get("full_name"); // Récupération du nom complet
+                String[] nameParts = fullName.split(" "); // Découpe du nom complet en prénom et nom de famille
+                String firstName = nameParts[0]; // Premier élément du tableau est le prénom
+                String lastName = nameParts.length > 1 ? nameParts[1] : ""; // Deuxième élément du tableau est le nom de
+                                                                            // famille, s'il existe
+
+                // Récupérer l'utilisateur s'il existe ou créer un nouvel utilisateur
+                User user = userRepository.findByEmail(email)
+                        .orElseGet(() -> {
+                            User newUser = new User();
+                            newUser.setEmail(email);
+                            newUser.setFirstName(firstName);
+                            newUser.setLastName(lastName);
+                            newUser.setUsername(lastName);
+                            newUser.setPassword("lastName");
+                            return userRepository.save(newUser);
+                        });
+
+                reviewObject.setUser(user);
+                Review createdReview = reviewRepository.save(reviewObject);
+                return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
+            } catch (IllegalArgumentException e) {
+                // La conversion a échoué
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            // L'objet requestBody est null ou ne contient pas la clé "review"
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
@@ -141,7 +182,7 @@ public class ReviewController {
         if (optionalReview.isPresent()) {
             Review existingReview = optionalReview.get();
             existingReview.setRating(review.getRating());
-            existingReview.setFullName(review.getFullName());
+            existingReview.setFull_name(review.getFull_name());
             existingReview.setEmail(review.getEmail());
             existingReview.setSummary(review.getSummary());
             existingReview.setReview(review.getReview());

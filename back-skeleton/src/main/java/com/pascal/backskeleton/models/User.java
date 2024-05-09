@@ -32,14 +32,14 @@ public class User {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = true)
     private String password;
 
     @Lob
     @Column(name = "image")
     private String image;
 
-    @Column(name = "updated_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
+    @Column(name = "updated_at", nullable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT NULL")
     private Timestamp updatedAt;
 
     @Column(name = "created_at", nullable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

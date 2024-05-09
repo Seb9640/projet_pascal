@@ -3,16 +3,16 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title">Avis des utilisateurs ({{ currentReviews.dataCount }}) </h2>
+        <h2 class="modal-title">Avis des utilisateurs ({{ reviewData.dataCount }}) </h2>
         <button type="button" class="btn-close" (click)="onCancel()"></button>
       </div>
       <div class="modal-body">
-        <div class="reviews" *ngIf="currentReviews?.datas?.length">
-          <div class="review-item card ms-3 p-3 mb-3" *ngFor="let review of currentReviews?.datas">
+        <div class="reviews" *ngIf="reviewData?.datas?.length">
+          <div class="review-item card ms-3 p-3 mb-3" *ngFor="let review of reviewData?.datas">
             <review-item [review]="review" />
           </div>
         </div>
-        <div *ngIf="!currentReviews?.datas?.length">
+        <div *ngIf="!reviewData?.datas?.length">
           Aucun avis disponible.
         </div>
 

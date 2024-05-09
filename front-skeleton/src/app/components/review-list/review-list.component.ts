@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ReviewService } from 'services/review.service';
 
 @Component({
   selector: 'review-list',
@@ -7,14 +8,25 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 })
 export class ReviewListComponent implements OnInit{
 
-  @Input() currentReviews?: any;
+  @Input() type?: any;
+  @Input() entity?: any;
   @Output() closeModal = new EventEmitter<any>();
   @ViewChild('reviewModal') reviewModal?: ElementRef;
   modal?: any
+  reviewData: any
+
+  constructor(private reviewService: ReviewService){}
 
 
   ngOnInit(): void {
     this.showModal()
+    if (this.type && this.entity) {
+      this.reviewService.getReviewByEntity(this.type, this.entity.id).subscribe(
+        (reviewData) => {
+          this.reviewData = reviewData
+        }
+      )
+    }
   }
 
   showModal(): void {

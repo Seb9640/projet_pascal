@@ -20,7 +20,7 @@ public class Review {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @Column(name = "entity_id", nullable = false)
@@ -61,11 +61,11 @@ public class Review {
 
 
 
-    public String getFullName() {
+    public String getFull_name() {
         return this.full_name;
     }
-
-    public void setFullName(String full_name) {
+    
+    public void setFull_name(String full_name) {
         this.full_name = full_name;
     }
 

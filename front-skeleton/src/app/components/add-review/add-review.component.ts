@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importer FormBuilder et FormGroup
+import { NotificationService } from 'services/notification.service';
 import { ReviewService } from 'services/review.service';
 
 @Component({
@@ -17,7 +18,11 @@ export class AddReviewComponent {
   modal: any
   formSubmitted = false;
 
-  constructor(private fb: FormBuilder, private reviewService: ReviewService){} // Injecter FormBuilder dans le constructeur
+  constructor(
+    private fb: FormBuilder,
+     private reviewService: ReviewService,
+     private notificationService: NotificationService
+    ){} // Injecter FormBuilder dans le constructeur
 
   ngOnInit(): void {
     this.initForm(); // Initialiser le formulaire
@@ -49,15 +54,24 @@ export class AddReviewComponent {
     if (this.reviewForm?.valid) { // Vérifier si le formulaire est valide
       const reviewData = this.reviewForm.value; // Obtenir les données du formulaire
       reviewData.createdAt = new Date()
+      reviewData.entityType = this.entityName
+      reviewData.entityId = this.entity.id
 
-      this.reviewService.addEntity({ 'review': reviewData }).subscribe(
+      console.log({reviewData});
+
+
+
+      this.reviewService.addEntity({ review: reviewData }).subscribe(
         (data: any)=>{
           console.log(data);
-
+          this.notificationService.addNotification("Avis laissé avec succès !")
+          this.closeModal.emit({type:'REVIEW', entity:this.entity })
+          this.modal.hide()
         },
         (error: any)=>{
           console.log(error);
-
+          this.notificationService.addNotification("Erreur serveur, merci de réessayer plus tard !")
+          this.modal.hide()
         },
       )
     } else {
