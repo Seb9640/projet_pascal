@@ -53,7 +53,7 @@
           </button>
           <ul class="dropdown-menu">
             <li *ngFor="let column of modelEntities">
-              <a class="dropdown-item" href="#">
+              <span class="dropdown-item"  >
                 <div class="form-check form-switch">
                   <input
                   class="form-check-input"
@@ -63,7 +63,7 @@
                   />
                   <label class="form-check-label" for="flexSwitchCheckChecked">{{ column| column }}</label>
                 </div>
-              </a>
+              </span>
             </li>
           </ul>
         </div>

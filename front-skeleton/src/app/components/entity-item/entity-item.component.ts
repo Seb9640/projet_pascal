@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { localDb } from 'db/local';
 import { Movie } from 'models/movie.model';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';

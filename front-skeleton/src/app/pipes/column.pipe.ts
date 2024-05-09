@@ -17,6 +17,12 @@ export class ColumnPipe implements PipeTransform {
     if(value == 'imageUrl'){
       return 'Image'
     }
+    if(value == 'director'){
+      return 'Auteur'
+    }
+    if(value == 'releaseDate'){
+      return 'Publication'
+    }
     if(value == 'posterUrl'){
       return 'Image'
     }

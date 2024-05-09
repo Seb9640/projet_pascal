@@ -1,37 +1,31 @@
-import { EsperoDB } from 'esperodb';
+import { FormFields } from "models/formFields.model";
 
-// Example database structure
-const dataStructure: any = [
-  {
-    'users': [
-      { indexes: [
-        { 'email': { unique: true } },
-        { 'username': { unique: true } }
-    ],
-    primaryKey: 'id' },
-    ],
-  },
-  {
-    'movies': [
-      { indexes: [],
-    primaryKey: 'id' },
-    ],
-  },
-  {
-    'places': [
-      { indexes: [],
-    primaryKey: 'id' },
-    ],
-  },
-  {
-    'review': [
-      { indexes: [{ 'entity_id': { unique: false } },],
-    primaryKey: 'id' },
-    ],
-  },
 
-];
-const dbVersion: number = 1;
 
-// Create an instance of the local database
-export const localDb = new EsperoDB('review_app_db', dataStructure, dbVersion);
+export const formFields: FormFields = {
+
+  users: [
+    "firstName",
+    "lastName",
+    "email",
+    "birthdate",
+    "username",
+    "password",
+    "image"
+  ],
+  movies: [
+    "title",
+    "director",
+    "releaseDate",
+    "synopsis",
+    "posterUrl"
+  ],
+  places: [
+    "title",
+    "address",
+    "imageUrl",
+    "openingHours"
+  ]
+
+}
+

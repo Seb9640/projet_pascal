@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { localDb } from 'db/local';
-import { fileToBlob, removePluralSuffix } from 'helpers/utiles';
+import { formFields } from 'db/local';
+import {  removePluralSuffix } from 'helpers/utiles';
+import { FormFields } from 'models/formFields.model';
 import { MovieService } from 'services/movie.service';
 import { NotificationService } from 'services/notification.service';
 import { PlaceService } from 'services/place.service';
@@ -14,7 +15,7 @@ import { UserService } from 'services/user.service';
   styleUrl: './add-edit-form.component.scss'
 })
 export class AddEditFormComponent implements OnInit {
-  @Input() entityName?: string;
+  @Input() entityName: keyof FormFields = "users";
   @Input() title?: string;
   @Input() model?: any;
   @Input() entity?: any;
@@ -41,9 +42,11 @@ export class AddEditFormComponent implements OnInit {
   }
   ngOnInit(): void {
     this.showModal();
-    console.log([this.model, this.entity, this.entityName]);
+
     const notAllowed = ["id", 'createdAt', "updatedAt", 'entityId', 'entityType'];
-    this.inputs = Object.keys(this.model).filter(key => !notAllowed.includes(key));
+    this.inputs = formFields[this.entityName as string]
+    console.log(this.inputs);
+
 
     const defaultValue: any = {};
     this.inputs.forEach((key) => {
@@ -105,13 +108,11 @@ export class AddEditFormComponent implements OnInit {
       console.log(this.form.value);
       const data: any = { ...this.form.value, ...this.selectedFiles };
       let formData: any = new FormData()
-      let hasFile: boolean = false
 
 
       for (const key in data) {
         if (data[key] instanceof File) {
           const file: File = data[key];
-          hasFile = true
           formData.append(key, file)
           delete data[key]
         }
@@ -130,7 +131,7 @@ export class AddEditFormComponent implements OnInit {
           }
         }
         data.updatedAt = new Date()
-        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], { type: 'application/json' }))
+        formData.append(removePluralSuffix(this.entityName as string), new Blob([JSON.stringify(data)], { type: 'application/json' }))
 
         service.updateEntity(data.id, formData).subscribe(
           (data: any) => {
@@ -148,7 +149,7 @@ export class AddEditFormComponent implements OnInit {
       } else {
         // add
         data.createdAt = new Date()
-        formData.append(removePluralSuffix(this.entityName!), new Blob([JSON.stringify(data)], { type: 'application/json' }))
+        formData.append(removePluralSuffix(this.entityName as string), new Blob([JSON.stringify(data)], { type: 'application/json' }))
 
         service.addEntity(formData).subscribe(
           (data: any) => {

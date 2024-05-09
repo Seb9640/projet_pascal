@@ -60,7 +60,7 @@
 
               <div class="d-flex gap-5 btn-footer">
                 <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
-                <button type="button" class="btn btn-primary" [disabled]="reviewForm?.invalid" (click)="onSubmit()">Ajouter</button>
+                <button type="button" class="btn btn-primary" [disabled]="reviewForm['invalid']" (click)="onSubmit()">Ajouter</button>
               </div>
             </form>
           </div>

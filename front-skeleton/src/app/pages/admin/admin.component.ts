@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { localDb } from 'db/local';
 import { MovieService } from 'services/movie.service';
 import { PlaceService } from 'services/place.service';
-import { ReviewService } from 'services/review.service';
 import { UserService } from 'services/user.service';
 
 @Component({
@@ -13,7 +11,7 @@ import { UserService } from 'services/user.service';
 })
 export class AdminComponent {
 
-  entityName?: string;
+  entityName: string = "";
   entityId?: string;
   entityData: any[] = [];
   entityAllData: any[] = [];
@@ -85,12 +83,7 @@ export class AdminComponent {
           this.updateTableHeader();
         }
 
-        for (let index = 0; index < datas.length; index++) {
-          const element = datas[index];
-          if (element) {
-            localDb.addData(this.entityName!, element)
-          }
-        }
+
       },
       (error: any) => {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
@@ -222,7 +215,7 @@ export class AdminComponent {
       }
       if (entity?.firstName) {
         return entity?.firstName?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          entity?.lastName?.toLowerCase().includes(this.searchTerm.toLowerCase()) 
+          entity?.lastName?.toLowerCase().includes(this.searchTerm.toLowerCase())
       }
     })
   }

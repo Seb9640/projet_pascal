@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { localDb } from 'db/local';
 import { MovieService } from 'services/movie.service';
 import { NotificationService } from 'services/notification.service';
 import { PlaceService } from 'services/place.service';
@@ -48,7 +47,7 @@ export class ConfirmModalComponent implements OnInit {
 
 
   confirmDeletion() {
-    localDb.deleteData(this.entityName!, this.entity.id!)
+
     let service: any;
 
     if (this.entityName === "review") {

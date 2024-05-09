@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core"
 import { Movie } from "models/movie.model"
 import { Router, ActivatedRoute } from '@angular/router';
-import { localDb } from "db/local";
 import { MovieService } from "services/movie.service";
 import { PlaceService } from "services/place.service";
 import { Place } from "models/place.model";
@@ -115,10 +114,7 @@ export class EntityListComponent implements OnInit {
   async displayReview(entitie: Movie){
     this.currentData = entitie
     this.title = "Avis pour le entity : "+entitie.title
-    this.currentReviews = (await localDb.search('review', 'entity_id', entitie.id)).map((r: any) =>{
-      r.entity = entitie
-      return r
-    })
+    
   }
 
 
